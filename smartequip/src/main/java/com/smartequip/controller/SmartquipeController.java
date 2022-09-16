@@ -1,6 +1,8 @@
 package com.smartequip.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,8 @@ import com.smartequip.service.SmartequipService2;
 
 @RestController
 public class SmartquipeController {
+
+	Logger logger = LoggerFactory.getLogger(SmartquipeController.class);
 
 	@Autowired
 	private SmartequipService1 service1;
@@ -28,12 +32,13 @@ public class SmartquipeController {
 	public ResponseEntity<String> createTutorial(@RequestBody String text,
 			@RequestHeader(value = "bearer", defaultValue = "") String token) {
 
-		System.out.println("token value :"+token);
 		if (StringUtils.isEmpty(token)) {
+			logger.info("new user");
 			return service1.getInitResponse(text);
 		}
 
-		return service2.validateResponse(text, token);
+		logger.info("existing user with token: "+token +" ,text: "+text);
+		return service2.checkAnswer(text, token);
 	}
 
 }

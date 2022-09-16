@@ -1,55 +1,20 @@
 package com.smartequip.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
-@Entity
-@Table(name = "smartequips")
+@Component
 public class Smartequip {
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
 	
-	@Column(name = "token")
-	private String token;
-	
-	@Column(name = "question")
 	private String question;
-	
-	@Column(name = "ansewer")
 	private int ansewer;
+	
+	public Smartequip() {
+	}
 
-	public Smartequip(String token, String question, int ansewer) {
+	public Smartequip(String question, int ansewer) {
 		super();
-		this.token = token;
 		this.question = question;
 		this.ansewer = ansewer;
-	}
-
-	public Smartequip() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
 	}
 
 	public String getQuestion() {
@@ -70,10 +35,9 @@ public class Smartequip {
 
 	@Override
 	public String toString() {
-		return "Smartequip [id=" + id + ", token=" + token + ", question=" + question + ", ansewer=" + ansewer + "]";
+		return "Smartequip [question=" + question + ", ansewer=" + ansewer + "]";
 	}
 
-	
 	
 	
 }
