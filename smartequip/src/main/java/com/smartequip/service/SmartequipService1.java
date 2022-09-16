@@ -2,6 +2,7 @@ package com.smartequip.service;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +15,11 @@ import com.smartequip.common.CommonConstantUtis;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.generateToken.GenerateToken;
 import com.smartequip.model.Smartequip;
-//import com.smartequip.repo.SmartequipRepo;
-import com.smartequip.validation.SmartequipValidation;
 
 @Service
 public class SmartequipService1 {
 
 	Logger logger = LoggerFactory.getLogger(SmartequipService1.class);
-
-	@Autowired
-	private SmartequipValidation smartequipValidation;
-		
-//	@Autowired
-//	private SmartequipRepo repo;
 	
 	@Autowired
 	private Smartequip smartequip;
@@ -34,8 +27,14 @@ public class SmartequipService1 {
 	@Autowired
 	private StoreInterface storeInterface;
 	
+	@Autowired
+	private GenerateToken generateToken;
+	
 	public ResponseEntity<String> getInitResponse(String question) {
-		if(smartequipValidation.validatefirstUserQUestion(question).isPresent()==false) {
+		logger.info("question: "+question);
+		logger.info(StringUtils.contains(question, CommonConstantUtis.USER_FIRST_QUESTION)+"");
+
+		if(!StringUtils.contains(question, CommonConstantUtis.USER_FIRST_QUESTION)) {
 			logger.info("Please ask valid question or corrent the sentence please");
 			 return ResponseEntity.badRequest()
 		    	      .body("Please ask valid question or corrent the sentence please");
@@ -49,14 +48,13 @@ public class SmartequipService1 {
 		String responseQuestion=CommonConstantUtis.SERVICE_FIRST_QUESTION+random1+","+random2+","+random3;
 		String finalresponse=CommonConstantUtis.SERVICE_FIRST_QUESTION_PREFIX+"\""+responseQuestion+"\".";
 		
-		Optional<String> generatedtokenvalue=new GenerateToken().generateToekn();
+		Optional<String> generatedtokenvalue=generateToken.generateToekn();
 		
-		mapper(random1, random2, random3, responseQuestion);
+		mapper(random1, random2, random3, responseQuestion,smartequip);
 		storeInterface.addItem(generatedtokenvalue.get(), smartequip);
 		logger.info("token: "+generatedtokenvalue.get()+" ,value: "+smartequip.toString());
 		logger.info("finalresponse: "+finalresponse);
 
-//		repo.save(smartequip);
 		
 		HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.set("bearer", 
@@ -67,8 +65,9 @@ public class SmartequipService1 {
 	    	      .body(finalresponse);
 	}
 
-	private void mapper(int random1, int random2, int random3, String responseQuestion) {
+	public Smartequip mapper(int random1, int random2, int random3, String responseQuestion,Smartequip smartequip) {
 		smartequip.setQuestion(responseQuestion);
 		smartequip.setAnsewer(random1+random2+random3);
+		return smartequip;
 	}
 }

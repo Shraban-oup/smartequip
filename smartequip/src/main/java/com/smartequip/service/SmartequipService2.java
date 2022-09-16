@@ -29,7 +29,7 @@ public class SmartequipService2 {
 		}
 		logger.info("token is exits with value: "+item.get().toString());
 		
-		if(text.contains(item.get().getQuestion()) && text.contains(CommonConstantUtis.SERVICE_ANSEWER_PREFIX)) {
+		if(!text.contains(item.get().getQuestion()) || !text.contains(CommonConstantUtis.SERVICE_ANSEWER_PREFIX)) {
 			return ResponseEntity.badRequest().body(CommonConstantUtis.WRONG_ANSWER +"            "+CommonConstantUtis.EXPECTED_ANSWER_FORMAT);
 		}
 
@@ -45,4 +45,6 @@ public class SmartequipService2 {
 			Optional<Integer> useranswer = CommonUtils.extractNumbers(text.substring(text.indexOf(CommonConstantUtis.SERVICE_ANSEWER_PREFIX)));
 			return useranswer.isPresent() && useranswer.get().intValue()==exitDetails.getAnsewer();
 	}
+	
+	
 }

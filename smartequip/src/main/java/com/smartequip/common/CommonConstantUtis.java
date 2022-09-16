@@ -10,7 +10,7 @@ public class CommonConstantUtis {
 	public static final String WRONG_ANSWER="That’s wrong. Please try again.";
 	public static final String CORRECT_ANSWER="That’s great";
 	public static final String INVALID_TOEKN="Invalid token";
-	public static final String EXPECTED_ANSWER_FORMAT="Expected format as an example: The original question was “Please sum the numbers 9,5,3” and the answer is 17.";
+	public static final String EXPECTED_ANSWER_FORMAT="Expected format as an example: \"The original question was “Please sum the numbers 9,5,3” and the answer is 17\"";
 
 
 }

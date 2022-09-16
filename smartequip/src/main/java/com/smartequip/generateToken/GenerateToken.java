@@ -6,8 +6,11 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.springframework.stereotype.Component;
+
 /*This is very simple token generate for validation purpose that previous user and current user is same or not.
 We can improve it by other string token creation in java and spring*/
+@Component
 public class GenerateToken {
 
 	public Optional<String> generateToekn() {
