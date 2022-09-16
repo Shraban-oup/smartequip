@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommonUtils.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 16, 2022 8:03:21 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.common</a> &gt; <span class="el_source">CommonUtils.java</span></div><h1>CommonUtils.java</h1><pre class="source lang-java linenums">package com.smartequip.common;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+<span class="nc" id="L7">public class CommonUtils {</span>
+
+	public static int generateRandomNo() {
+		try {
+<span class="fc" id="L11">			double doubleRandomNumber = Math.random() * 99;</span>
+<span class="fc" id="L12">			int randomNumber = (int) doubleRandomNumber;</span>
+<span class="fc" id="L13">			return randomNumber;</span>
+<span class="nc" id="L14">		} catch (Exception e) {</span>
+			// If any issue while generate random no default no will send
+<span class="nc" id="L16">			return CommonConstantUtis.DEFAULT_NUMBER;</span>
+		}
+	}
+
+	public static Optional&lt;Integer&gt; extractNumbers(String s) {
+<span class="fc" id="L21">		Pattern p = Pattern.compile(&quot;\\d+&quot;);</span>
+<span class="fc" id="L22">		Matcher m = p.matcher(s);</span>
+
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">		if (m.find()) {</span>
+<span class="fc" id="L25">			return Optional.of(Integer.parseInt(m.group()));</span>
+		}
+<span class="nc" id="L27">		return Optional.empty();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 16, 2022 8:03:21 PM)</div></body></html>

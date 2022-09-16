@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SmartequipService1Test.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 16, 2022 8:03:21 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.service</a> &gt; <span class="el_source">SmartequipService1Test.java</span></div><h1>SmartequipService1Test.java</h1><pre class="source lang-java linenums">package com.smartequip.service;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.smartequip.cache.StoreInterface;
+import com.smartequip.generateToken.GenerateToken;
+import com.smartequip.model.Smartequip;
+
+@ExtendWith(MockitoExtension.class)
+<span class="fc" id="L23">class SmartequipService1Test {</span>
+
+	@InjectMocks
+	private SmartequipService1 service1;
+	
+	@Mock
+	private static Smartequip smartequip;
+	
+	@Mock
+	private StoreInterface storeInterface;
+	
+	@Mock
+	private GenerateToken generateToken;
+	
+	@Test
+	public void mapperTest() {
+<span class="fc" id="L39">		smartequip = new Smartequip(&quot;Please sum the numbers 87,54,82&quot;, 223);</span>
+<span class="fc" id="L40">		Smartequip createCreditCard = service1.mapper(87, 54, 82, &quot;Please sum the numbers 87,54,82&quot;,new Smartequip());</span>
+<span class="fc" id="L41">		Assertions.assertEquals(smartequip.getAnsewer(), createCreditCard.getAnsewer());</span>
+<span class="fc" id="L42">	}</span>
+	
+	@Test
+	public void getInitResponseTest_wrongSentence() {
+<span class="fc" id="L46">		ResponseEntity&lt;String&gt; responseEntity=service1.getInitResponse(&quot;Hey Service, can you provide me a     question with    numbers to add?&quot;);</span>
+<span class="fc" id="L47">		Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());</span>
+<span class="fc" id="L48">	}</span>
+	
+	@Test
+	public void getInitResponseTest_positive() {
+<span class="fc" id="L52">		when(generateToken.generateToekn()).thenReturn(Optional.of(&quot;123&quot;));</span>
+<span class="fc" id="L53">		doNothing().when(storeInterface).addItem(any(), any());</span>
+<span class="fc" id="L54">		ResponseEntity&lt;String&gt; responseEntity=service1.getInitResponse(&quot;Hey Service, can you provide me a question with numbers to add?&quot;);</span>
+<span class="fc" id="L55">		Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());</span>
+<span class="fc" id="L56">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 16, 2022 8:03:21 PM)</div></body></html>
