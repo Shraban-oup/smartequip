@@ -28,7 +28,7 @@ public class SmartquipeController {
 	 * as per requirement app should have single endpoint "/". we can improve it by
 	 * doing spring cloud api getway for endpoint redirection and validation of user
 	 */
-	@PostMapping("/api")
+	@PostMapping("/")
 	public ResponseEntity<String> createTutorial(@RequestBody String text,
 			@RequestHeader(value = "bearer", defaultValue = "") String token) {
 
