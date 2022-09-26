@@ -1,28 +1,31 @@
 package com.smartequip.model;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class Smartequip {
-	
-	private String question;
+
+	private List<Integer> questionNums;
 	private int ansewer;
-	
+
 	public Smartequip() {
+		super();
 	}
 
-	public Smartequip(String question, int ansewer) {
+	public Smartequip(List<Integer> questionNums, int ansewer) {
 		super();
-		this.question = question;
+		this.questionNums = questionNums;
 		this.ansewer = ansewer;
 	}
 
-	public String getQuestion() {
-		return question;
+	public List<Integer> getQuestionNums() {
+		return questionNums;
 	}
 
-	public void setQuestion(String question) {
-		this.question = question;
+	public void setQuestionNums(List<Integer> questionNums) {
+		this.questionNums = questionNums;
 	}
 
 	public int getAnsewer() {
@@ -35,9 +38,6 @@ public class Smartequip {
 
 	@Override
 	public String toString() {
-		return "Smartequip [question=" + question + ", ansewer=" + ansewer + "]";
+		return "Smartequip [questionNums=" + questionNums + ", ansewer=" + ansewer + "]";
 	}
-
-	
-	
 }

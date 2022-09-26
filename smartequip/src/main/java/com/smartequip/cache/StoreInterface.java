@@ -4,6 +4,10 @@ import java.util.Optional;
 
 import com.smartequip.model.Smartequip;
 
+/**
+ * @author Shraban.Rana
+ *
+ */
 public interface StoreInterface {
 
 	public void addItem(String token,Smartequip smartequip);
