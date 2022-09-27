@@ -14,14 +14,9 @@ public class CommonUtils {
 	Logger logger = LoggerFactory.getLogger(CommonUtils.class);
 
 	public static int generateRandomNo() {
-		try {
-			double doubleRandomNumber = Math.random() * 99;
-			int randomNumber = (int) doubleRandomNumber;
-			return randomNumber;
-		} catch (Exception e) {
-			// If any issue while generate random no default no will send
-			return CommonConstantsUtils.DEFAULT_NUMBER;
-		}
+		double doubleRandomNumber = Math.random() * 99;
+		int randomNumber = (int) doubleRandomNumber;
+		return randomNumber;
 	}
 
 	public static List<Integer> extractAllDigits(String value) {

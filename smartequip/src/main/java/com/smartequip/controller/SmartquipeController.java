@@ -62,9 +62,9 @@ public class SmartquipeController {
 		if (!StringUtils.isEmpty(token)) {
 			logger.info("OldUser");
 			Optional<Smartequip> smartDetails = answersService.getSmartEquipDetails(token);
-			Optional<String> validatedQuestion = validator.validateAnswer(request, smartDetails);
-			if (validatedQuestion.isPresent()) {
-				return ResponseEntity.badRequest().body(new SmartequipResponse(validatedQuestion.get(),
+			Optional<String> validatedAnswer = validator.validateAnswer(request, smartDetails);
+			if (validatedAnswer.isPresent()) {
+				return ResponseEntity.badRequest().body(new SmartequipResponse(validatedAnswer.get(),
 						HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()));
 			}
 

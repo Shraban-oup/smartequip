@@ -49,9 +49,7 @@ public class Validator {
 	}
 
 	public boolean validatePreQuestionNums(List<Integer> allDigits, List<Integer> actialnumbers) {
-		if (allDigits.isEmpty()) {
-			return false;
-		} else if (allDigits.size() > 4 && allDigits.size() < 3) {
+		if (allDigits.size() > 4) {
 			return false;
 		}
 		List<Integer> questionsdigit = Arrays.asList(allDigits.get(0), allDigits.get(1), allDigits.get(2));

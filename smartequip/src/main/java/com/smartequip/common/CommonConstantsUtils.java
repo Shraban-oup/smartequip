@@ -10,9 +10,9 @@ public class CommonConstantsUtils {
 	public static final String SERVICE_ANSEWER_PREFIX = "the answer is";
 
 	public static final String WRONG_QUESTION = "Please ask valid question or corrent the sentence";
-	public static final String WRONG_ANSWER = "That’s wrong. Please try again.";
-	public static final String WRONG_ANSWER_FORMAT = "The sentence format is wrong, please check and corrent the sentence.Example: Your answer should contains following example format: “Please sum the numbers 9,5,3” and the answer is 17.";
-	public static final String CORRECT_ANSWER = "That’s great";
+	public static final String WRONG_ANSWER = "That's wrong. Please try again.";
+	public static final String WRONG_ANSWER_FORMAT = "The sentence format is wrong, please check and corrent the sentence.Example: Your answer should contains following example format: 'Please sum the numbers 9,5,3' and the answer is 17.";
+	public static final String CORRECT_ANSWER = "That's great";
 	public static final String PRE_QUESTION_CHANGES = "please provide correct numbers";
 	public static final String INVALID_TOEKN = "Invalid token";
 
