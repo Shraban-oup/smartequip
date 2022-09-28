@@ -60,7 +60,7 @@ public class SmartquipeController {
 			@RequestHeader(value = "bearer", defaultValue = "") String token) {
 
 		if (!StringUtils.isEmpty(token)) {
-			logger.info("OldUser");
+			logger.info("OldUser: request- "+request+" , token- "+token);
 			Optional<Smartequip> smartDetails = answersService.getSmartEquipDetails(token);
 			Optional<String> validatedAnswer = validator.validateAnswer(request, smartDetails);
 			if (validatedAnswer.isPresent()) {
@@ -73,7 +73,7 @@ public class SmartquipeController {
 					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));
 
 		} else {
-			logger.info("newUser");
+			logger.info("newUser: request- "+request+" , token- "+token);
 			Optional<String> validatedQuestion = validator.validateQuestion(request);
 			if (validatedQuestion.isPresent()) {
 				return ResponseEntity.badRequest().body(new SmartequipResponse(validatedQuestion.get(),

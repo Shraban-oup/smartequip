@@ -21,6 +21,10 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.smartequip.generateToken.TokenGenerator;
 import com.smartequip.model.Smartequip;
 
+/**
+ * @author Shraban.Rana
+ *
+ */
 @ExtendWith(MockitoExtension.class)
 class StoreProcessTest {
 
@@ -52,19 +56,19 @@ class StoreProcessTest {
 	}
 
 	@Test
-	void getItemTest_itemNotPresent() {
+	void getItemTest_invalidToken() {
 		assertEquals(false, process.getItem("1234").isPresent());
 	}
 
 	@Test
-	void getItemTest_Present() {
+	void getItemTest_validToken() {
 		Optional<Smartequip> result = this.process.getItem(generateToken);
 		assertEquals(30, result.get().getAnsewer());
 
 	}
 
 	@Test
-	void deleteItemTest_Present() {
+	void deleteItemTest() {
 		this.process.deleteItem(generateToken);
 		verify(this.process, Mockito.times(1)).deleteItem(generateToken);
 	}

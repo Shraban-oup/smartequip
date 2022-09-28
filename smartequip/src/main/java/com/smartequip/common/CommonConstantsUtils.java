@@ -1,5 +1,10 @@
 package com.smartequip.common;
 
+/**
+ * This is the constant file
+ * @author Shraban.Rana
+ *
+ */
 public class CommonConstantsUtils {
 
 	public static final String USER_FIRST_QUESTION_REGEX = "question\\swith\\snumbers\\sto\\sadd(\\s)?\\?";

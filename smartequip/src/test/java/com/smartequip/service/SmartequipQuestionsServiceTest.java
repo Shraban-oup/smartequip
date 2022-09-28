@@ -19,6 +19,10 @@ import com.smartequip.common.CommonConstantsUtils;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.model.Smartequip;
 
+/**
+ * @author Shraban.Rana
+ *
+ */
 @ExtendWith(MockitoExtension.class)
 class SmartequipQuestionsServiceTest {
 

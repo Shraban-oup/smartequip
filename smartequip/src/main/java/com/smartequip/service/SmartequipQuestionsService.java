@@ -12,6 +12,11 @@ import com.smartequip.common.CommonConstantsUtils;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.model.Smartequip;
 
+/**
+ * This service class do operation on first client request for human verification
+ * @author Shraban.Rana
+ *
+ */
 @Service
 public class SmartequipQuestionsService {
 
@@ -20,6 +25,11 @@ public class SmartequipQuestionsService {
 	@Autowired
 	private StoreInterface storeInterface;
 
+	/**
+	 * This will sent response with question and token for subsequent requests.
+	 * @param newtoken
+	 * @return
+	 */
 	public String getQuestion(String newtoken) {
 		List<Integer> generateRandomNumbers = CommonUtils.generateRandomNumbers(3);
 		Smartequip smartequip = mapper(generateRandomNumbers, CommonUtils.getSumOfNumbers(generateRandomNumbers));
@@ -30,6 +40,12 @@ public class SmartequipQuestionsService {
 				+ CommonUtils.getDelimiterSeparated(CommonConstantsUtils.COMMA, generateRandomNumbers) + ".";
 	}
 
+	/**
+	 * This function mapped to stored asked questions numbers and final answer.
+	 * @param generateRandomNumbers
+	 * @param answer
+	 * @return
+	 */
 	public Smartequip mapper(List<Integer> generateRandomNumbers, int answer) {
 		Smartequip smartequip=new Smartequip();
 		smartequip.setQuestionNums(generateRandomNumbers);

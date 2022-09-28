@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommonUtilsTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 28, 2022 10:51:40 AM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.common</a> &gt; <span class="el_source">CommonUtilsTest.java</span></div><h1>CommonUtilsTest.java</h1><pre class="source lang-java linenums">package com.smartequip.common;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+<span class="fc" id="L15">class CommonUtilsTest {</span>
+
+	@InjectMocks
+	private CommonUtils commonUtils;
+
+	@Test
+	void generateRandomNoTest() {
+<span class="fc" id="L22">		String generateRandomNo = String.valueOf(commonUtils.generateRandomNo());</span>
+<span class="fc" id="L23">		boolean result = Pattern.compile(&quot;^\\d+&quot;).matcher(generateRandomNo).find();</span>
+<span class="fc" id="L24">		assertEquals(true, result);</span>
+
+<span class="fc" id="L26">	}</span>
+
+	@Test
+	void generateRandomNumbersTest() {
+<span class="fc" id="L30">		List&lt;Integer&gt; generateRandomNumbers = commonUtils.generateRandomNumbers(3);</span>
+<span class="fc" id="L31">		assertEquals(3, generateRandomNumbers.size());</span>
+<span class="fc" id="L32">	}</span>
+
+	@Test
+	void getDelimiterSeparatedTest() {
+<span class="fc" id="L36">		String generateRandomNumbers = commonUtils.getDelimiterSeparated(&quot;,&quot;, Arrays.asList(1, 2, 5));</span>
+<span class="fc" id="L37">		assertEquals(&quot;1,2,5&quot;, generateRandomNumbers);</span>
+<span class="fc" id="L38">	}</span>
+
+	@Test
+	void getSumOfNumbersTest() {
+<span class="fc" id="L42">		int sumOfNumbers = commonUtils.getSumOfNumbers(Arrays.asList(1, 2, 5));</span>
+<span class="fc" id="L43">		assertEquals(8, sumOfNumbers);</span>
+<span class="fc" id="L44">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 28, 2022 10:51:40 AM)</div></body></html>

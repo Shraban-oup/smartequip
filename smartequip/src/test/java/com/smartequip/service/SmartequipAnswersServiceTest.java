@@ -1,7 +1,6 @@
 package com.smartequip.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -20,6 +19,11 @@ import com.smartequip.cache.StoreInterface;
 import com.smartequip.common.CommonConstantsUtils;
 import com.smartequip.model.Smartequip;
 
+/**
+ * Test for client answer service class 
+ * @author Shraban.Rana
+ *
+ */
 @ExtendWith(MockitoExtension.class)
 class SmartequipAnswersServiceTest {
 
@@ -29,12 +33,18 @@ class SmartequipAnswersServiceTest {
 	@InjectMocks
 	private SmartequipAnswersService answersService;
 
+	/**
+	 * Test for server final response is correctly coming or not.
+	 */
 	@Test
 	void getServerAnswerTest() {
 		doNothing().when(storeInterface).deleteItem(any());
 		assertEquals(CommonConstantsUtils.CORRECT_ANSWER, answersService.getServerAnswer(any()));
 	}
 
+	/**
+	 * Test for expected answer of asked question is correctly coming from server
+	 */
 	@Test
 	void getSmartEquipDetailsTest() {
 		List<Integer> questionNums = new ArrayList<>();

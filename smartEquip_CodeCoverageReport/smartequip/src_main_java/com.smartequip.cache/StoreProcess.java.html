@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>StoreProcess.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 28, 2022 10:51:40 AM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.cache</a> &gt; <span class="el_source">StoreProcess.java</span></div><h1>StoreProcess.java</h1><pre class="source lang-java linenums">package com.smartequip.cache;
+
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.stereotype.Component;
+
+import com.smartequip.model.Smartequip;
+
+/**
+ * @author Shraban.Rana
+ * 
+ *         Storing token as Key until Human verification of client, then
+ *         entrySet deleted.
+ */
+@Component
+<span class="fc" id="L17">public class StoreProcess implements StoreInterface {</span>
+
+<span class="fc" id="L19">	public static ConcurrentHashMap&lt;String, Smartequip&gt; store = new ConcurrentHashMap&lt;&gt;();</span>
+
+	/**
+	 * This will add token , smart equip object in cache.
+	 */
+	@Override
+	public void addItem(String token, Smartequip smartequip) {
+<span class="fc" id="L26">		store.put(token, smartequip);</span>
+<span class="fc" id="L27">	}</span>
+
+	/**
+	 * This will get Value based on Key as Token.
+	 */
+	@Override
+	public Optional&lt;Smartequip&gt; getItem(String token) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">		if (findItem(token)) {</span>
+<span class="fc" id="L35">			return Optional.ofNullable(store.get(token));</span>
+		}
+<span class="fc" id="L37">		return Optional.empty();</span>
+	}
+
+	/**
+	 * This will verify token that is it exits or not
+	 */
+	@Override
+	public boolean findItem(String token) {
+<span class="fc" id="L45">		return store.containsKey(token);</span>
+
+	}
+
+	/**
+	 * This will delete entire entrySet
+	 */
+	@Override
+	public void deleteItem(String token) {
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">		if (findItem(token)) {</span>
+<span class="fc" id="L55">			store.remove(token);</span>
+		}
+<span class="fc" id="L57">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 28, 2022 10:51:40 AM)</div></body></html>
