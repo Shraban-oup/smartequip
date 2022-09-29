@@ -1,0 +1,15 @@
+package com.smartequip.exceptionhandler;
+
+/**
+ * Handled runtimeException Validation
+ * @author Shraban.Rana
+ *
+ */
+public class ValidationException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
+
+	public ValidationException(String msg) {
+		super(msg);
+	}
+}

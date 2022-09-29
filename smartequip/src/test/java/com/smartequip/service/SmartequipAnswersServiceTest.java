@@ -1,8 +1,10 @@
 package com.smartequip.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -55,5 +57,4 @@ class SmartequipAnswersServiceTest {
 		when(storeInterface.getItem(any())).thenReturn(Optional.of(smartequip));
 		assertEquals(smartequip.getAnsewer(), answersService.getSmartEquipDetails(any()).get().getAnsewer());
 	}
-
 }

@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.smartequip.common.CommonConstantsUtils;
 import com.smartequip.common.CommonUtils;
+import com.smartequip.exceptionhandler.ResourceNotFoundException;
+import com.smartequip.exceptionhandler.ValidationException;
 import com.smartequip.model.Smartequip;
+import com.smartequip.service.SmartequipAnswersService;
 
 /**
  * This class is validation purpose of question and answer.
@@ -19,38 +23,40 @@ import com.smartequip.model.Smartequip;
 @Component
 public class Validator {
 
+	@Autowired
+	private SmartequipAnswersService answersService;
+	
+	
 	/**
 	 * This function validate the answer of asked question with various validation.
 	 * @param request
-	 * @param smartDetails
-	 * @return Optional<String>
+	 * @param token
 	 */
-	public Optional<String> validateAnswer(String request, Optional<Smartequip> smartDetails) {
+	public void validateAnswer(String request, String token) {
+		Optional<Smartequip> smartDetails = answersService.getSmartEquipDetails(token);
+		if (!smartDetails.isPresent()) {
+			throw new ResourceNotFoundException(CommonConstantsUtils.INVALID_TOEKN);
+		} else if (!checkAnswerFormat(request)) {
+			throw new ValidationException(CommonConstantsUtils.WRONG_ANSWER_FORMAT);
+		}
 		List<Integer> allDigits = CommonUtils.extractAllDigits(request);
 
-		if (!smartDetails.isPresent()) {
-			return Optional.of(CommonConstantsUtils.INVALID_TOEKN);
-		} else if (!checkAnswerFormat(request)) {
-			return Optional.of(CommonConstantsUtils.WRONG_ANSWER_FORMAT);
-		} else if (!validatePreQuestionNums(allDigits, smartDetails.get().getQuestionNums())) {
-			return Optional.of(CommonConstantsUtils.PRE_QUESTION_CHANGES);
+		if (!validatePreQuestionNums(allDigits, smartDetails.get().getQuestionNums())) {
+			throw new ValidationException(CommonConstantsUtils.PRE_QUESTION_CHANGES);
 		} else if (!validateAnswer(allDigits, smartDetails.get().getAnsewer())) {
-			return Optional.of(CommonConstantsUtils.WRONG_ANSWER);
-		} else {
-			return Optional.empty();
+			throw new ValidationException(CommonConstantsUtils.WRONG_ANSWER);
 		}
 	}
 
+	
 	/**
 	 * This function validate client first request is correct format or not.
 	 * @param question
-	 * @return Optional<String>
 	 */
-	public Optional<String> validateQuestion(String question) {
+	public void validateQuestion(String question) {
 		if (!Pattern.compile(CommonConstantsUtils.USER_FIRST_QUESTION_REGEX).matcher(question).find()) {
-			return Optional.of(CommonConstantsUtils.WRONG_QUESTION);
+			throw new ValidationException(CommonConstantsUtils.WRONG_QUESTION);
 		}
-		return Optional.empty();
 	}
 
 	/**

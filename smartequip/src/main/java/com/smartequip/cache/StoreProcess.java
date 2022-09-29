@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 
+import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.exceptionhandler.ResourceNotFoundException;
 import com.smartequip.model.Smartequip;
 
 /**
@@ -31,10 +33,11 @@ public class StoreProcess implements StoreInterface {
 	 */
 	@Override
 	public Optional<Smartequip> getItem(String token) {
-		if (findItem(token)) {
-			return Optional.ofNullable(store.get(token));
+		try {
+			return Optional.of(store.get(token));
+		} catch (Exception e) {
+			return Optional.empty();
 		}
-		return Optional.empty();
 	}
 
 	/**
@@ -51,9 +54,7 @@ public class StoreProcess implements StoreInterface {
 	 */
 	@Override
 	public void deleteItem(String token) {
-		if (findItem(token)) {
 			store.remove(token);
-		}
 	}
 
 }

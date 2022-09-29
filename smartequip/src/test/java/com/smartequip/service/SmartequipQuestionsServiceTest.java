@@ -1,6 +1,8 @@
 package com.smartequip.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mockStatic;
 
 import java.util.ArrayList;
@@ -36,29 +38,21 @@ class SmartequipQuestionsServiceTest {
 	 * This function test whether generated numbers returning valid question format.
 	 */
 	@Test
-	void getQuestionTest() {
-		try (MockedStatic<CommonUtils> utilities = mockStatic(CommonUtils.class)) {
+	void getServerQuestionTest() {
+	//	try (MockedStatic<CommonUtils> utilities = mockStatic(CommonUtils.class)) {
+		
+			List<Integer> questionNums = new ArrayList<>();
+			questionNums.add(10);
+			questionNums.add(5);
+			questionNums.add(15);
+			Smartequip smartequip = new Smartequip(questionNums, 30);
 			List<Integer> generateRandomNumbers = Arrays.asList(10, 4, 5);
-			utilities.when(() -> CommonUtils.generateRandomNumbers(3)).thenReturn(generateRandomNumbers);
 			String expected = CommonConstantsUtils.SERVER_QUESTION_PREFIX
 					+ CommonUtils.getDelimiterSeparated(CommonConstantsUtils.COMMA, generateRandomNumbers) + ".";
-			assertEquals(expected, questionsService.getQuestion("1234554545"));
+			doNothing().when(storeInterface).addItem(any(), any());
+			assertEquals(expected, questionsService.getServerQuestion("123456", smartequip, generateRandomNumbers));
 
-		}
-	}
-
-	/**
-	 * This function test correct question and answer number mapping.
-	 */
-	@Test
-	void mapperTest() {
-		List<Integer> questionNums = new ArrayList<>();
-		questionNums.add(10);
-		questionNums.add(5);
-		questionNums.add(15);
-		Smartequip smartequip = new Smartequip(questionNums, 30);
-		assertEquals(smartequip.getAnsewer(), questionsService.mapper(questionNums, 30).getAnsewer());
-
+	//	}
 	}
 
 }

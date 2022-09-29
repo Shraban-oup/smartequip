@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
+import com.smartequip.model.Smartequip;
+
 /**
  * @author Shraban.Rana
  *
@@ -15,11 +17,12 @@ import org.springframework.stereotype.Component;
 public class TokenGenerator {
 
 	/**
-	 * This is generate unique token based on currentTimeInMilisecond.
+	 * This is generate unique token based on currentTimeInMilisecond and hash code.
 	 * 
+	 * @param smartequip
 	 * @return String
 	 */
-	public String generateToken() {
+	public String generateToken(Smartequip smartequip) {
 
 		Supplier<String> tokenSupplier = () -> {
 			StringBuilder token = new StringBuilder();
@@ -27,7 +30,8 @@ public class TokenGenerator {
 			return token.append(currentTimeInMilisecond).append("-").append(UUID.randomUUID().toString()).toString();
 		};
 
-		return Stream.generate(tokenSupplier).limit(1).findFirst().get();
+		String token = Stream.generate(tokenSupplier).limit(1).findFirst().get();
+		return (String.valueOf(smartequip.hashCode()) + token);
 
 	}
 }

@@ -1,13 +1,28 @@
 package com.smartequip.model;
 
-import org.springframework.stereotype.Component;
-
-@Component
+/**
+ * Success message response class
+ * 
+ * @author Shraban.Rana
+ *
+ */
 public class SmartequipResponse {
 
 	private String message;
 	private String status;
-	private int status_code;
+	private int statusCode;
+
+	public SmartequipResponse() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public SmartequipResponse(String message, String status, int statusCode) {
+		super();
+		this.message = message;
+		this.status = status;
+		this.statusCode = statusCode;
+	}
 
 	public String getMessage() {
 		return message;
@@ -25,24 +40,12 @@ public class SmartequipResponse {
 		this.status = status;
 	}
 
-	public int getStatus_code() {
-		return status_code;
+	public int getStatusCode() {
+		return statusCode;
 	}
 
-	public void setStatus_code(int status_code) {
-		this.status_code = status_code;
-	}
-
-	public SmartequipResponse(String message, String status, int status_code) {
-		super();
-		this.message = message;
-		this.status = status;
-		this.status_code = status_code;
-	}
-
-	public SmartequipResponse() {
-		super();
-		// TODO Auto-generated constructor stub
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
 	}
 
 }

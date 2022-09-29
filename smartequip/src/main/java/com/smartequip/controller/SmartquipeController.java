@@ -1,6 +1,6 @@
 package com.smartequip.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonUtils;
+import com.smartequip.common.MapperUtil;
 import com.smartequip.generateToken.TokenGenerator;
 import com.smartequip.model.Smartequip;
 import com.smartequip.model.SmartequipResponse;
@@ -24,9 +26,10 @@ import com.smartequip.service.SmartequipQuestionsService;
 import com.smartequip.validate.Validator;
 
 /**
+ * SmartquipeController is used for client human verification.
+ * 
  * @author Shraban.Rana
  * 
- *         SmartquipeController is used for client human verification.
  */
 @RestController
 public class SmartquipeController {
@@ -44,6 +47,9 @@ public class SmartquipeController {
 
 	@Autowired
 	private Validator validator;
+	
+	@Autowired
+	private MapperUtil mapperUtil;
 
 	/**
 	 * As per requirement, Smartequipe should have single end point '/' and client
@@ -51,6 +57,12 @@ public class SmartquipeController {
 	 * answer of exiting client differentiated by bearer token.
 	 * 
 	 * bearer in header is not mandatory for new user.
+	 * 
+	 * consumes = { MediaType.ALL_VALUE }: because This is human verification APP
+	 * and also we are validating format of request sentence/text.
+	 * 
+	 * produces = { MediaType.APPLICATION_JSON_VALUE }: as we are sending code and
+	 * body etc.. so JSON format is best choice.
 	 * 
 	 * @param text
 	 * @param token
@@ -61,30 +73,23 @@ public class SmartquipeController {
 			@RequestHeader(value = "bearer", defaultValue = "") String token) {
 
 		if (!StringUtils.isEmpty(token)) {
-			logger.info("OldUser: request- "+request+" , token- "+token);
-			Optional<Smartequip> smartDetails = answersService.getSmartEquipDetails(token);
-			Optional<String> validatedAnswer = validator.validateAnswer(request, smartDetails);
-			if (validatedAnswer.isPresent()) {
-				return ResponseEntity.badRequest().body(new SmartequipResponse(validatedAnswer.get(),
-						HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()));
-			}
-
+			logger.info("OldUser: request- " + request + " , token- " + token);
+			validator.validateAnswer(request, token);
 			String response = answersService.getServerAnswer(token);
 			return ResponseEntity.ok()
 					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));
 
 		} else {
-			logger.info("newUser: request- "+request+" , token- "+token);
-			Optional<String> validatedQuestion = validator.validateQuestion(request);
-			if (validatedQuestion.isPresent()) {
-				return ResponseEntity.badRequest().body(new SmartequipResponse(validatedQuestion.get(),
-						HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()));
-			}
-			String newToken = tokenGenerator.generateToken();
-			String response = questionsService.getQuestion(newToken);
+			logger.info("newUser: request- " + request + " , token- " + token);
+			validator.validateQuestion(request);
+
+			List<Integer> randomNumbers = CommonUtils.generateRandomNumbers(3);
+			Smartequip smartequip = mapperUtil.mapper(randomNumbers);
+			String uniqueToken = tokenGenerator.generateToken(smartequip);
+			String response = questionsService.getServerQuestion(uniqueToken,smartequip,randomNumbers);
 
 			HttpHeaders responseHeaders = new HttpHeaders();
-			responseHeaders.set("bearer", newToken);
+			responseHeaders.set("bearer", uniqueToken);
 
 			return ResponseEntity.ok().headers(responseHeaders)
 					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));

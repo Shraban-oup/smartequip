@@ -27,30 +27,18 @@ public class SmartequipQuestionsService {
 
 	/**
 	 * This will sent response with question and token for subsequent requests.
+	 * @param smartequip 
+	 * @param randomNumbers 
 	 * @param newtoken
 	 * @return
 	 */
-	public String getQuestion(String newtoken) {
-		List<Integer> generateRandomNumbers = CommonUtils.generateRandomNumbers(3);
-		Smartequip smartequip = mapper(generateRandomNumbers, CommonUtils.getSumOfNumbers(generateRandomNumbers));
-		storeInterface.addItem(newtoken, smartequip);
-		logger.info("token: " + newtoken + " ,value: " + smartequip.toString());
+	public String getServerQuestion(String uniqueToken, Smartequip smartequip, List<Integer> randomNumbers) {
+		storeInterface.addItem(uniqueToken, smartequip);
+		logger.info("token: " + uniqueToken + " ,value: " + smartequip.toString());
 
 		return CommonConstantsUtils.SERVER_QUESTION_PREFIX
-				+ CommonUtils.getDelimiterSeparated(CommonConstantsUtils.COMMA, generateRandomNumbers) + ".";
+				+ CommonUtils.getDelimiterSeparated(CommonConstantsUtils.COMMA, randomNumbers) + ".";
 	}
-
-	/**
-	 * This function mapped to stored asked questions numbers and final answer.
-	 * @param generateRandomNumbers
-	 * @param answer
-	 * @return
-	 */
-	public Smartequip mapper(List<Integer> generateRandomNumbers, int answer) {
-		Smartequip smartequip=new Smartequip();
-		smartequip.setQuestionNums(generateRandomNumbers);
-		smartequip.setAnsewer(answer);
-		return smartequip;
-	}
+	
 
 }
