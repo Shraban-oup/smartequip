@@ -2,6 +2,7 @@ package com.smartequip.cache;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ import com.smartequip.model.Smartequip;
 @Component
 public class StoreProcessImpl implements StoreProcess {
 
-	public static ConcurrentHashMap<Smartequip, Integer> cache = new ConcurrentHashMap<Smartequip, Integer>();
+	private static ConcurrentMap<Smartequip, Integer> cache = new ConcurrentHashMap<>();
 
 	/**
 	 *add record

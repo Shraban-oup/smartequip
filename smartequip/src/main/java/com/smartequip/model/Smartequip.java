@@ -17,7 +17,6 @@ public class Smartequip {
 	 */
 	public Smartequip() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.smartequip.cache.StoreProcess;
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.model.Smartequip;
 
 /**
@@ -32,7 +32,7 @@ public class SmartequipAnswersService {
 	 */
 	public String getServerAnswer(Smartequip smartequip) {
 		storeInterface.deleteItem(smartequip);
-		return CommonConstantsUtils.CORRECT_ANSWER;
+		return CommonConstants.CORRECT_ANSWER;
 	}
 
 	/**

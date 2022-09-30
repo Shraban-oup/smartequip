@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommonUtils.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 3:30:04 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.common</a> &gt; <span class="el_source">CommonUtils.java</span></div><h1>CommonUtils.java</h1><pre class="source lang-java linenums">package com.smartequip.common;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommonUtils.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 6:49:43 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.common</a> &gt; <span class="el_source">CommonUtils.java</span></div><h1>CommonUtils.java</h1><pre class="source lang-java linenums">package com.smartequip.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,7 @@ import org.springframework.stereotype.Component;
 	 */
 	public static int randomNumberUpToTwoDigit() {
 <span class="fc" id="L31">		double doubleRandomNumber = Math.random() * 99;</span>
-<span class="fc" id="L32">		int randomNumber = (int) doubleRandomNumber;</span>
-<span class="fc" id="L33">		return randomNumber;</span>
+<span class="fc" id="L32">		return (int) doubleRandomNumber;</span>
 	}
 	
 	/**
@@ -38,11 +37,10 @@ import org.springframework.stereotype.Component;
 	 * @return
 	 */
 	public static int maxDigitOfNumbers() {
-<span class="fc" id="L41">		int max = PropDetails.getMax();</span>
-<span class="fc" id="L42">		double d = Math.random() * max;</span>
-<span class="fc" id="L43">		double doubleRandomNumber = 2+d;</span>
-<span class="fc" id="L44">		int randomNumber = (int) doubleRandomNumber;</span>
-<span class="fc" id="L45">		return randomNumber;</span>
+<span class="fc" id="L40">		int max = PropDetails.getMax();</span>
+<span class="fc" id="L41">		double d = Math.random() * max;</span>
+<span class="fc" id="L42">		double doubleRandomNumber = 2+d;</span>
+<span class="fc" id="L43">		return (int) doubleRandomNumber;</span>
 	}
 
 	/**
@@ -51,13 +49,13 @@ import org.springframework.stereotype.Component;
 	 * @return List&lt;Integer&gt;
 	 */
 	public static List&lt;Integer&gt; extractAllDigits(String value) {
-<span class="fc" id="L54">		Pattern p = Pattern.compile(&quot;\\d+&quot;);</span>
-<span class="fc" id="L55">		Matcher m = p.matcher(value);</span>
-<span class="fc" id="L56">		List&lt;Integer&gt; digits = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">		while (m.find()) {</span>
-<span class="fc" id="L58">			digits.add(Integer.parseInt(m.group()));</span>
+<span class="fc" id="L52">		Pattern p = Pattern.compile(&quot;\\d+&quot;);</span>
+<span class="fc" id="L53">		Matcher m = p.matcher(value);</span>
+<span class="fc" id="L54">		List&lt;Integer&gt; digits = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">		while (m.find()) {</span>
+<span class="fc" id="L56">			digits.add(Integer.parseInt(m.group()));</span>
 		}
-<span class="fc" id="L60">		return digits;</span>
+<span class="fc" id="L58">		return digits;</span>
 	}
 
 	/**
@@ -66,8 +64,8 @@ import org.springframework.stereotype.Component;
 	 * @return List&lt;Integer&gt;
 	 */
 	public static List&lt;Integer&gt; collectRandomNumbers() {
-<span class="fc" id="L69">		int limit = maxDigitOfNumbers();</span>
-<span class="fc" id="L70">		return IntStream.range(0, limit).mapToObj(v -&gt; CommonUtils.randomNumberUpToTwoDigit()).collect(Collectors.toList());</span>
+<span class="fc" id="L67">		int limit = maxDigitOfNumbers();</span>
+<span class="fc" id="L68">		return IntStream.range(0, limit).mapToObj(v -&gt; CommonUtils.randomNumberUpToTwoDigit()).collect(Collectors.toList());</span>
 	}
 
 	/**
@@ -77,8 +75,8 @@ import org.springframework.stereotype.Component;
 	 * @return String
 	 */
 	public static String getDelimiterSeparated(String delimiter, List&lt;Integer&gt; list) {
-<span class="fc" id="L80">		return (String) list.stream().map(v -&gt; String.valueOf(v)).collect(Collectors.joining(&quot;,&quot;));</span>
+<span class="fc" id="L78">		return list.stream().map(String::valueOf).collect(Collectors.joining(delimiter));</span>
 	}
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 3:30:04 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 6:49:43 PM)</div></body></html>

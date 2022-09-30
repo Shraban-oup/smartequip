@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.common.MapperUtil;
-import com.smartequip.generateToken.TokenGenerator;
 import com.smartequip.model.Smartequip;
 import com.smartequip.model.SmartequipResponse;
 import com.smartequip.service.SmartequipAnswersService;
 import com.smartequip.service.SmartequipQuestionsService;
+import com.smartequip.tokengenerator.TokenGenerator;
 import com.smartequip.validate.Validator;
 
 /**
@@ -76,7 +76,7 @@ public class SmartquipeController {
 			Smartequip smartequip = validator.validateAnswer(request, token);
 			String response = answersService.getServerAnswer(smartequip);
 			return ResponseEntity.ok()
-					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));
+					.body(new SmartequipResponse(response, CommonConstants.SUCCESS, HttpStatus.OK.value()));
 
 		} else {
 			validator.validateQuestion(request);
@@ -89,7 +89,7 @@ public class SmartquipeController {
 			responseHeaders.set("bearer", uniqueToken);
 
 			return ResponseEntity.ok().headers(responseHeaders)
-					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));
+					.body(new SmartequipResponse(response, CommonConstants.SUCCESS, HttpStatus.OK.value()));
 		}
 
 	}

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SmartquipeController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 3:30:04 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.controller</a> &gt; <span class="el_source">SmartquipeController.java</span></div><h1>SmartquipeController.java</h1><pre class="source lang-java linenums">package com.smartequip.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SmartquipeController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 6:49:43 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.controller</a> &gt; <span class="el_source">SmartquipeController.java</span></div><h1>SmartquipeController.java</h1><pre class="source lang-java linenums">package com.smartequip.controller;
 
 import java.util.List;
 
@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.common.MapperUtil;
-import com.smartequip.generateToken.TokenGenerator;
 import com.smartequip.model.Smartequip;
 import com.smartequip.model.SmartequipResponse;
 import com.smartequip.service.SmartequipAnswersService;
 import com.smartequip.service.SmartequipQuestionsService;
+import com.smartequip.tokengenerator.TokenGenerator;
 import com.smartequip.validate.Validator;
 
 /**
@@ -76,7 +76,7 @@ import com.smartequip.validate.Validator;
 <span class="fc" id="L76">			Smartequip smartequip = validator.validateAnswer(request, token);</span>
 <span class="fc" id="L77">			String response = answersService.getServerAnswer(smartequip);</span>
 <span class="fc" id="L78">			return ResponseEntity.ok()</span>
-<span class="fc" id="L79">					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));</span>
+<span class="fc" id="L79">					.body(new SmartequipResponse(response, CommonConstants.SUCCESS, HttpStatus.OK.value()));</span>
 
 		} else {
 <span class="fc" id="L82">			validator.validateQuestion(request);</span>
@@ -89,10 +89,10 @@ import com.smartequip.validate.Validator;
 <span class="fc" id="L89">			responseHeaders.set(&quot;bearer&quot;, uniqueToken);</span>
 
 <span class="fc" id="L91">			return ResponseEntity.ok().headers(responseHeaders)</span>
-<span class="fc" id="L92">					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));</span>
+<span class="fc" id="L92">					.body(new SmartequipResponse(response, CommonConstants.SUCCESS, HttpStatus.OK.value()));</span>
 		}
 
 	}
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 3:30:04 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 6:49:43 PM)</div></body></html>

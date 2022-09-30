@@ -29,8 +29,7 @@ public class CommonUtils {
 	 */
 	public static int randomNumberUpToTwoDigit() {
 		double doubleRandomNumber = Math.random() * 99;
-		int randomNumber = (int) doubleRandomNumber;
-		return randomNumber;
+		return (int) doubleRandomNumber;
 	}
 	
 	/**
@@ -41,8 +40,7 @@ public class CommonUtils {
 		int max = PropDetails.getMax();
 		double d = Math.random() * max;
 		double doubleRandomNumber = 2+d;
-		int randomNumber = (int) doubleRandomNumber;
-		return randomNumber;
+		return (int) doubleRandomNumber;
 	}
 
 	/**
@@ -77,7 +75,7 @@ public class CommonUtils {
 	 * @return String
 	 */
 	public static String getDelimiterSeparated(String delimiter, List<Integer> list) {
-		return (String) list.stream().map(v -> String.valueOf(v)).collect(Collectors.joining(","));
+		return list.stream().map(String::valueOf).collect(Collectors.joining(delimiter));
 	}
 
 }

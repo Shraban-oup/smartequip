@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.smartequip.cache.StoreProcess;
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.model.Smartequip;
 
@@ -55,7 +55,7 @@ class SmartequipQuestionsServiceTest {
 	@Test
 	void getServerQuestionTest() {
 		try (MockedStatic<CommonUtils> common = mockStatic(CommonUtils.class)) {
-			String expected = CommonConstantsUtils.SERVER_QUESTION_PREFIX + "10,5,15" + ".";
+			String expected = CommonConstants.SERVER_QUESTION_PREFIX + "10,5,15" + ".";
 			common.when(() -> {
 				CommonUtils.getDelimiterSeparated(any(), any());
 			}).thenReturn("10,5,15");

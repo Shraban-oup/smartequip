@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.smartequip.cache.StoreProcess;
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.model.Smartequip;
 
@@ -37,8 +37,8 @@ public class SmartequipQuestionsService {
 	public String getServerQuestion(Smartequip smartequip) {
 		int sumOfNumbers = smartequip.getQuestionNums().stream().mapToInt(Integer::intValue).sum();
 		storeInterface.addItem(smartequip, sumOfNumbers);
-		return CommonConstantsUtils.SERVER_QUESTION_PREFIX
-				+ CommonUtils.getDelimiterSeparated(CommonConstantsUtils.COMMA, smartequip.getQuestionNums()) + ".";
+		return CommonConstants.SERVER_QUESTION_PREFIX
+				+ CommonUtils.getDelimiterSeparated(CommonConstants.COMMA, smartequip.getQuestionNums()) + ".";
 	}
 
 }

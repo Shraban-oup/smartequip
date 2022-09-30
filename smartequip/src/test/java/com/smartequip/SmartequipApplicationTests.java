@@ -15,7 +15,7 @@ class SmartequipApplicationTest {
 	 * This will cover the code coverage of application main class
 	 */
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 		SmartequipApplication.main(new String[] {});
 		assertTrue(true);
 	}

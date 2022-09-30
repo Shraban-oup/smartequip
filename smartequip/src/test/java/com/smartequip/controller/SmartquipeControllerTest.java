@@ -22,16 +22,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.common.MapperUtil;
 import com.smartequip.common.PropDetails;
+import com.smartequip.exceptionhandler.TokenException;
 import com.smartequip.exceptionhandler.ValidationException;
-import com.smartequip.generateToken.TokenGenerator;
 import com.smartequip.model.ErrorMessage;
 import com.smartequip.model.Smartequip;
 import com.smartequip.service.SmartequipAnswersService;
 import com.smartequip.service.SmartequipQuestionsService;
+import com.smartequip.tokengenerator.TokenGenerator;
 import com.smartequip.validate.Validator;
 
 /**
@@ -111,14 +112,14 @@ class SmartquipeControllerTest {
 	@Test
 	void smartEquipHumanClientCheck_invalidQuestion() throws Exception {
 		String clientRequest = "Hey Service, can you provide me a ques tion  with  numbers to  add ?";
-		doThrow(new ValidationException(CommonConstantsUtils.WRONG_QUESTION)).when(validator).validateQuestion(any());
+		doThrow(new ValidationException(CommonConstants.WRONG_QUESTION)).when(validator).validateQuestion(any());
 		MvcResult requestResult = this.mockMvc.perform(post("/").content(clientRequest))
 				.andExpect(status().isBadRequest()).andReturn();
 		String json = requestResult.getResponse().getContentAsString();
 		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);
-		assertEquals(response.getMessage(), CommonConstantsUtils.WRONG_QUESTION);
-		assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.name());
-		assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST.value());
+		assertEquals(CommonConstants.WRONG_QUESTION, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST.name(), response.getStatus());
+		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCode());
 	}
 
 	/**
@@ -130,14 +131,14 @@ class SmartquipeControllerTest {
 	void smartEquipHumanClientCheck_validAnswer() throws Exception {
 		String serviceAnswer = "Great. The original question was “Please sum the numbers 10,5,15” and the answer is 30";
 		when(validator.validateAnswer(any(), any())).thenReturn(smartequip);
-		when(answersService.getServerAnswer(any())).thenReturn(CommonConstantsUtils.CORRECT_ANSWER);
+		when(answersService.getServerAnswer(any())).thenReturn(CommonConstants.CORRECT_ANSWER);
 		MvcResult requestResult = this.mockMvc.perform(post("/").content(serviceAnswer).header("bearer", generateToken))
 				.andExpect(status().isOk()).andReturn();
 		String json = requestResult.getResponse().getContentAsString();
 		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);
-		assertEquals(response.getMessage(), CommonConstantsUtils.CORRECT_ANSWER);
-		assertEquals(response.getStatus(), CommonConstantsUtils.SUCCESS);
-		assertEquals(response.getStatusCode(), HttpStatus.OK.value());
+		assertEquals(CommonConstants.CORRECT_ANSWER, response.getMessage());
+		assertEquals(CommonConstants.SUCCESS, response.getStatus());
+		assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 	}
 
 	/**
@@ -148,17 +149,37 @@ class SmartquipeControllerTest {
 	@Test
 	void smartEquipHumanClientCheck_invalidAnswer() throws Exception {
 		String serviceAnswer = "Great. The original question was “Please sum the numbers 10,5,15” and the answer is 10";
-		doThrow(new ValidationException(CommonConstantsUtils.WRONG_ANSWER)).when(validator).validateAnswer(any(),
+		doThrow(new ValidationException(CommonConstants.WRONG_ANSWER)).when(validator).validateAnswer(any(),
 				any());
 		MvcResult requestResult = this.mockMvc.perform(post("/").content(serviceAnswer).header("bearer", generateToken))
 				.andExpect(status().isBadRequest()).andReturn();
 		String json = requestResult.getResponse().getContentAsString();
 		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);
-		assertEquals(response.getMessage(), CommonConstantsUtils.WRONG_ANSWER);
-		assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.name());
-		assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST.value());
+		assertEquals(CommonConstants.WRONG_ANSWER, response.getMessage());
+		assertEquals(HttpStatus.BAD_REQUEST.name(), response.getStatus());
+		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCode());
 	}
 
+	/**
+	 * Only For token exception testing. If any token creation error
+	 * how it react.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void tokenExceptionHandlerTest() throws Exception {
+		String serviceAnswer = "Great. The original question was “Please sum the numbers 10,5,15” and the answer is 10";
+		doThrow(new TokenException(CommonConstants.TOKEN_CREATION_ERROR_MESSAGE)).when(validator).validateAnswer(any(),
+				any());
+		MvcResult requestResult = this.mockMvc.perform(post("/").content(serviceAnswer).header("bearer", generateToken))
+				.andExpect(status().isInternalServerError()).andReturn();
+		String json = requestResult.getResponse().getContentAsString();
+		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);
+		assertEquals(CommonConstants.TOKEN_CREATION_ERROR_MESSAGE, response.getMessage());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.name(), response.getStatus());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());
+	}
+	
 	/**
 	 * Only For global parent exception testing. If any exception not handled then
 	 * how it react.
@@ -173,9 +194,9 @@ class SmartquipeControllerTest {
 				.andExpect(status().isInternalServerError()).andReturn();
 		String json = requestResult.getResponse().getContentAsString();
 		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);
-		assertEquals(response.getMessage(), CommonConstantsUtils.INTERNAL_SERVER_ERROR_MESSAGE);
-		assertEquals(response.getStatus(), HttpStatus.INTERNAL_SERVER_ERROR.name());
-		assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+		assertEquals(CommonConstants.INTERNAL_SERVER_ERROR_MESSAGE, response.getMessage());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.name(), response.getStatus());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());
 	}
 
 }

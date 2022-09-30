@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SmartquipeControllerTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 3:30:04 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.controller</a> &gt; <span class="el_source">SmartquipeControllerTest.java</span></div><h1>SmartquipeControllerTest.java</h1><pre class="source lang-java linenums">package com.smartequip.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SmartquipeControllerTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 6:49:43 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.controller</a> &gt; <span class="el_source">SmartquipeControllerTest.java</span></div><h1>SmartquipeControllerTest.java</h1><pre class="source lang-java linenums">package com.smartequip.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,16 +22,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.common.MapperUtil;
 import com.smartequip.common.PropDetails;
+import com.smartequip.exceptionhandler.TokenException;
 import com.smartequip.exceptionhandler.ValidationException;
-import com.smartequip.generateToken.TokenGenerator;
 import com.smartequip.model.ErrorMessage;
 import com.smartequip.model.Smartequip;
 import com.smartequip.service.SmartequipAnswersService;
 import com.smartequip.service.SmartequipQuestionsService;
+import com.smartequip.tokengenerator.TokenGenerator;
 import com.smartequip.validate.Validator;
 
 /**
@@ -39,7 +40,7 @@ import com.smartequip.validate.Validator;
  *
  */
 @WebMvcTest(controllers = SmartquipeController.class)
-<span class="fc" id="L42">class SmartquipeControllerTest {</span>
+<span class="fc" id="L43">class SmartquipeControllerTest {</span>
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -66,16 +67,16 @@ import com.smartequip.validate.Validator;
 
 	@BeforeAll
 	public static void init() {
-<span class="fc" id="L69">		digitList = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L70">		digitList.add(10);</span>
-<span class="fc" id="L71">		digitList.add(5);</span>
-<span class="fc" id="L72">		digitList.add(15);</span>
-<span class="fc" id="L73">		generateToken = &quot;123456789103209-1232323&quot;;</span>
-<span class="fc" id="L74">		smartequip = new Smartequip(digitList, generateToken);</span>
+<span class="fc" id="L70">		digitList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L71">		digitList.add(10);</span>
+<span class="fc" id="L72">		digitList.add(5);</span>
+<span class="fc" id="L73">		digitList.add(15);</span>
+<span class="fc" id="L74">		generateToken = &quot;123456789103209-1232323&quot;;</span>
+<span class="fc" id="L75">		smartequip = new Smartequip(digitList, generateToken);</span>
 
-<span class="fc" id="L76">		propDetails = new PropDetails();</span>
-<span class="fc" id="L77">		propDetails.setDigitMax(&quot;3&quot;);</span>
-<span class="fc" id="L78">	}</span>
+<span class="fc" id="L77">		propDetails = new PropDetails();</span>
+<span class="fc" id="L78">		propDetails.setDigitMax(&quot;3&quot;);</span>
+<span class="fc" id="L79">	}</span>
 
 	/**
 	 * Test for new client requested question correctly.
@@ -84,24 +85,24 @@ import com.smartequip.validate.Validator;
 	 */
 	@Test
 	void smartEquipHumanClientCheck_validQuestion() throws Exception {
-<span class="fc" id="L87">		String serviceQuestion = &quot;Here you go, solve the question: Please sum the numbers 10,4,6.&quot;;</span>
-<span class="fc" id="L88">		String clientRequest = &quot;Hey Service, can you provide me a question with numbers to add ?&quot;;</span>
-<span class="fc" id="L89">		try (MockedStatic&lt;CommonUtils&gt; commonUtils = mockStatic(CommonUtils.class)) {</span>
-<span class="fc" id="L90">			when(validator.validateQuestion(any())).thenReturn(true);</span>
-<span class="fc" id="L91">			commonUtils.when(() -&gt; {</span>
-<span class="fc" id="L92">				CommonUtils.collectRandomNumbers();</span>
-<span class="fc" id="L93">			}).thenReturn(digitList);</span>
-<span class="fc" id="L94">			when(mapperUtil.mapper(any(), any())).thenReturn(smartequip);</span>
-<span class="fc" id="L95">			when(this.tokenGenerator.createUniqueToken(any())).thenReturn(generateToken);</span>
-<span class="fc" id="L96">			when(questionsService.getServerQuestion(any())).thenReturn(serviceQuestion);</span>
+<span class="fc" id="L88">		String serviceQuestion = &quot;Here you go, solve the question: Please sum the numbers 10,4,6.&quot;;</span>
+<span class="fc" id="L89">		String clientRequest = &quot;Hey Service, can you provide me a question with numbers to add ?&quot;;</span>
+<span class="fc" id="L90">		try (MockedStatic&lt;CommonUtils&gt; commonUtils = mockStatic(CommonUtils.class)) {</span>
+<span class="fc" id="L91">			when(validator.validateQuestion(any())).thenReturn(true);</span>
+<span class="fc" id="L92">			commonUtils.when(() -&gt; {</span>
+<span class="fc" id="L93">				CommonUtils.collectRandomNumbers();</span>
+<span class="fc" id="L94">			}).thenReturn(digitList);</span>
+<span class="fc" id="L95">			when(mapperUtil.mapper(any(), any())).thenReturn(smartequip);</span>
+<span class="fc" id="L96">			when(this.tokenGenerator.createUniqueToken(any())).thenReturn(generateToken);</span>
+<span class="fc" id="L97">			when(questionsService.getServerQuestion(any())).thenReturn(serviceQuestion);</span>
 
-<span class="fc" id="L98">			MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(clientRequest)).andExpect(status().isOk())</span>
-<span class="fc" id="L99">					.andReturn();</span>
+<span class="fc" id="L99">			MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(clientRequest)).andExpect(status().isOk())</span>
+<span class="fc" id="L100">					.andReturn();</span>
 
-<span class="fc" id="L101">			String header = requestResult.getResponse().getHeader(&quot;bearer&quot;);</span>
-<span class="fc" id="L102">			assertEquals(header, generateToken);</span>
+<span class="fc" id="L102">			String header = requestResult.getResponse().getHeader(&quot;bearer&quot;);</span>
+<span class="fc" id="L103">			assertEquals(header, generateToken);</span>
 		}
-<span class="fc" id="L104">	}</span>
+<span class="fc" id="L105">	}</span>
 
 	/**
 	 * Test for new client request invalid question.
@@ -110,16 +111,16 @@ import com.smartequip.validate.Validator;
 	 */
 	@Test
 	void smartEquipHumanClientCheck_invalidQuestion() throws Exception {
-<span class="fc" id="L113">		String clientRequest = &quot;Hey Service, can you provide me a ques tion  with  numbers to  add ?&quot;;</span>
-<span class="fc" id="L114">		doThrow(new ValidationException(CommonConstantsUtils.WRONG_QUESTION)).when(validator).validateQuestion(any());</span>
-<span class="fc" id="L115">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(clientRequest))</span>
-<span class="fc" id="L116">				.andExpect(status().isBadRequest()).andReturn();</span>
-<span class="fc" id="L117">		String json = requestResult.getResponse().getContentAsString();</span>
-<span class="fc" id="L118">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
-<span class="fc" id="L119">		assertEquals(response.getMessage(), CommonConstantsUtils.WRONG_QUESTION);</span>
-<span class="fc" id="L120">		assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.name());</span>
-<span class="fc" id="L121">		assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST.value());</span>
-<span class="fc" id="L122">	}</span>
+<span class="fc" id="L114">		String clientRequest = &quot;Hey Service, can you provide me a ques tion  with  numbers to  add ?&quot;;</span>
+<span class="fc" id="L115">		doThrow(new ValidationException(CommonConstants.WRONG_QUESTION)).when(validator).validateQuestion(any());</span>
+<span class="fc" id="L116">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(clientRequest))</span>
+<span class="fc" id="L117">				.andExpect(status().isBadRequest()).andReturn();</span>
+<span class="fc" id="L118">		String json = requestResult.getResponse().getContentAsString();</span>
+<span class="fc" id="L119">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
+<span class="fc" id="L120">		assertEquals(CommonConstants.WRONG_QUESTION, response.getMessage());</span>
+<span class="fc" id="L121">		assertEquals(HttpStatus.BAD_REQUEST.name(), response.getStatus());</span>
+<span class="fc" id="L122">		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCode());</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Test for client answer question in proper way
@@ -128,17 +129,17 @@ import com.smartequip.validate.Validator;
 	 */
 	@Test
 	void smartEquipHumanClientCheck_validAnswer() throws Exception {
-<span class="fc" id="L131">		String serviceAnswer = &quot;Great. The original question was “Please sum the numbers 10,5,15” and the answer is 30&quot;;</span>
-<span class="fc" id="L132">		when(validator.validateAnswer(any(), any())).thenReturn(smartequip);</span>
-<span class="fc" id="L133">		when(answersService.getServerAnswer(any())).thenReturn(CommonConstantsUtils.CORRECT_ANSWER);</span>
-<span class="fc" id="L134">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(serviceAnswer).header(&quot;bearer&quot;, generateToken))</span>
-<span class="fc" id="L135">				.andExpect(status().isOk()).andReturn();</span>
-<span class="fc" id="L136">		String json = requestResult.getResponse().getContentAsString();</span>
-<span class="fc" id="L137">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
-<span class="fc" id="L138">		assertEquals(response.getMessage(), CommonConstantsUtils.CORRECT_ANSWER);</span>
-<span class="fc" id="L139">		assertEquals(response.getStatus(), CommonConstantsUtils.SUCCESS);</span>
-<span class="fc" id="L140">		assertEquals(response.getStatusCode(), HttpStatus.OK.value());</span>
-<span class="fc" id="L141">	}</span>
+<span class="fc" id="L132">		String serviceAnswer = &quot;Great. The original question was “Please sum the numbers 10,5,15” and the answer is 30&quot;;</span>
+<span class="fc" id="L133">		when(validator.validateAnswer(any(), any())).thenReturn(smartequip);</span>
+<span class="fc" id="L134">		when(answersService.getServerAnswer(any())).thenReturn(CommonConstants.CORRECT_ANSWER);</span>
+<span class="fc" id="L135">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(serviceAnswer).header(&quot;bearer&quot;, generateToken))</span>
+<span class="fc" id="L136">				.andExpect(status().isOk()).andReturn();</span>
+<span class="fc" id="L137">		String json = requestResult.getResponse().getContentAsString();</span>
+<span class="fc" id="L138">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
+<span class="fc" id="L139">		assertEquals(CommonConstants.CORRECT_ANSWER, response.getMessage());</span>
+<span class="fc" id="L140">		assertEquals(CommonConstants.SUCCESS, response.getStatus());</span>
+<span class="fc" id="L141">		assertEquals(HttpStatus.OK.value(), response.getStatusCode());</span>
+<span class="fc" id="L142">	}</span>
 
 	/**
 	 * Test for client given wrong answer i.e, sum of numbers is incorrect.
@@ -147,18 +148,38 @@ import com.smartequip.validate.Validator;
 	 */
 	@Test
 	void smartEquipHumanClientCheck_invalidAnswer() throws Exception {
-<span class="fc" id="L150">		String serviceAnswer = &quot;Great. The original question was “Please sum the numbers 10,5,15” and the answer is 10&quot;;</span>
-<span class="fc" id="L151">		doThrow(new ValidationException(CommonConstantsUtils.WRONG_ANSWER)).when(validator).validateAnswer(any(),</span>
-<span class="fc" id="L152">				any());</span>
-<span class="fc" id="L153">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(serviceAnswer).header(&quot;bearer&quot;, generateToken))</span>
-<span class="fc" id="L154">				.andExpect(status().isBadRequest()).andReturn();</span>
-<span class="fc" id="L155">		String json = requestResult.getResponse().getContentAsString();</span>
-<span class="fc" id="L156">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
-<span class="fc" id="L157">		assertEquals(response.getMessage(), CommonConstantsUtils.WRONG_ANSWER);</span>
-<span class="fc" id="L158">		assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.name());</span>
-<span class="fc" id="L159">		assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST.value());</span>
-<span class="fc" id="L160">	}</span>
+<span class="fc" id="L151">		String serviceAnswer = &quot;Great. The original question was “Please sum the numbers 10,5,15” and the answer is 10&quot;;</span>
+<span class="fc" id="L152">		doThrow(new ValidationException(CommonConstants.WRONG_ANSWER)).when(validator).validateAnswer(any(),</span>
+<span class="fc" id="L153">				any());</span>
+<span class="fc" id="L154">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(serviceAnswer).header(&quot;bearer&quot;, generateToken))</span>
+<span class="fc" id="L155">				.andExpect(status().isBadRequest()).andReturn();</span>
+<span class="fc" id="L156">		String json = requestResult.getResponse().getContentAsString();</span>
+<span class="fc" id="L157">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
+<span class="fc" id="L158">		assertEquals(CommonConstants.WRONG_ANSWER, response.getMessage());</span>
+<span class="fc" id="L159">		assertEquals(HttpStatus.BAD_REQUEST.name(), response.getStatus());</span>
+<span class="fc" id="L160">		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCode());</span>
+<span class="fc" id="L161">	}</span>
 
+	/**
+	 * Only For token exception testing. If any token creation error
+	 * how it react.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void tokenExceptionHandlerTest() throws Exception {
+<span class="fc" id="L171">		String serviceAnswer = &quot;Great. The original question was “Please sum the numbers 10,5,15” and the answer is 10&quot;;</span>
+<span class="fc" id="L172">		doThrow(new TokenException(CommonConstants.TOKEN_CREATION_ERROR_MESSAGE)).when(validator).validateAnswer(any(),</span>
+<span class="fc" id="L173">				any());</span>
+<span class="fc" id="L174">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(serviceAnswer).header(&quot;bearer&quot;, generateToken))</span>
+<span class="fc" id="L175">				.andExpect(status().isInternalServerError()).andReturn();</span>
+<span class="fc" id="L176">		String json = requestResult.getResponse().getContentAsString();</span>
+<span class="fc" id="L177">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
+<span class="fc" id="L178">		assertEquals(CommonConstants.TOKEN_CREATION_ERROR_MESSAGE, response.getMessage());</span>
+<span class="fc" id="L179">		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.name(), response.getStatus());</span>
+<span class="fc" id="L180">		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());</span>
+<span class="fc" id="L181">	}</span>
+	
 	/**
 	 * Only For global parent exception testing. If any exception not handled then
 	 * how it react.
@@ -167,16 +188,16 @@ import com.smartequip.validate.Validator;
 	 */
 	@Test
 	void globalExceptionHandlerTest() throws Exception {
-<span class="fc" id="L170">		String serviceAnswer = &quot;Great. The original question was “Please sum the numbers 10,5,15” and the answer is 10&quot;;</span>
-<span class="fc" id="L171">		doThrow(new NullPointerException()).when(validator).validateAnswer(any(), any());</span>
-<span class="fc" id="L172">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(serviceAnswer).header(&quot;bearer&quot;, generateToken))</span>
-<span class="fc" id="L173">				.andExpect(status().isInternalServerError()).andReturn();</span>
-<span class="fc" id="L174">		String json = requestResult.getResponse().getContentAsString();</span>
-<span class="fc" id="L175">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
-<span class="fc" id="L176">		assertEquals(response.getMessage(), CommonConstantsUtils.INTERNAL_SERVER_ERROR_MESSAGE);</span>
-<span class="fc" id="L177">		assertEquals(response.getStatus(), HttpStatus.INTERNAL_SERVER_ERROR.name());</span>
-<span class="fc" id="L178">		assertEquals(response.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR.value());</span>
-<span class="fc" id="L179">	}</span>
+<span class="fc" id="L191">		String serviceAnswer = &quot;Great. The original question was “Please sum the numbers 10,5,15” and the answer is 10&quot;;</span>
+<span class="fc" id="L192">		doThrow(new NullPointerException()).when(validator).validateAnswer(any(), any());</span>
+<span class="fc" id="L193">		MvcResult requestResult = this.mockMvc.perform(post(&quot;/&quot;).content(serviceAnswer).header(&quot;bearer&quot;, generateToken))</span>
+<span class="fc" id="L194">				.andExpect(status().isInternalServerError()).andReturn();</span>
+<span class="fc" id="L195">		String json = requestResult.getResponse().getContentAsString();</span>
+<span class="fc" id="L196">		ErrorMessage response = new ObjectMapper().readValue(json, ErrorMessage.class);</span>
+<span class="fc" id="L197">		assertEquals(CommonConstants.INTERNAL_SERVER_ERROR_MESSAGE, response.getMessage());</span>
+<span class="fc" id="L198">		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.name(), response.getStatus());</span>
+<span class="fc" id="L199">		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());</span>
+<span class="fc" id="L200">	}</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 3:30:04 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 6:49:43 PM)</div></body></html>

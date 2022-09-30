@@ -6,11 +6,11 @@ package com.smartequip.common;
  * @author Shraban.Rana
  *
  */
-public class CommonConstantsUtils {
+public class CommonConstants {
 
 	public static final String USER_FIRST_QUESTION_REGEX = "^(H|h)ey\\s(S|s)ervice\\s?,\\s?can\\syou\\sprovide\\sme\\sa\\squestion\\swith\\snumbers\\sto\\sadd(\\s)?\\?";
-	public static final String USER_ANSEWER_REGEX_part1 = "Please\\ssum\\sthe\\snumbers\\s(\\d+\\s?,\\s?){";
-	public static final String USER_ANSEWER_REGEX_part2 = "}\\d+(\\D){1,2}and\\sthe\\sanswer\\sis\\s\\d+((\\D){1,2})?";
+	public static final String USER_ANSEWER_REGEX_PART1 = "Please\\ssum\\sthe\\snumbers\\s(\\d+\\s?,\\s?){";
+	public static final String USER_ANSEWER_REGEX_PART2 = "}\\d+(\\D){1,2}and\\sthe\\sanswer\\sis\\s\\d+((\\D){1,2})?";
 
 	public static final String INVALID_CLIENT_ANSWER_REQUEST = "Please request with correct numbers and valid token ";
 
@@ -27,6 +27,11 @@ public class CommonConstantsUtils {
 
 	public static final String SUCCESS = "Success";
 	public static final String COMMA = ",";
-	public static final String INTERNAL_SERVER_ERROR_MESSAGE="Sorry, something went wrong. Please try again";
+	public static final String INTERNAL_SERVER_ERROR_MESSAGE = "Sorry, something went wrong. Please try again";
+	public static final String TOKEN_CREATION_ERROR_MESSAGE = "Sorry, something went wrong. Please try again";
+	public static final String DD_MM_YYYY_HH_MM_SS = "dd-MM-yyyy HH:mm:ss";
+
+	private CommonConstants() {}
+	
 
 }

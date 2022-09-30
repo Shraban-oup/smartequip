@@ -64,7 +64,7 @@ class CommonUtilsTest {
 		expectedResult.add(4);
 
 		List<Integer> result = CommonUtils.extractAllDigits("find 1,3,4");
-		assertTrue(result.equals(expectedResult));
+		assertEquals(expectedResult, result);
 	}
 
 	/**

@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.smartequip.cache.StoreProcess;
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 
 /**
  * Test for client answer service class 
@@ -36,7 +36,7 @@ class SmartequipAnswersServiceTest {
 	@Test
 	void getServerAnswerTest() {
 		doNothing().when(storeInterface).deleteItem(any());
-		assertEquals(CommonConstantsUtils.CORRECT_ANSWER, answersService.getServerAnswer(any()));
+		assertEquals(CommonConstants.CORRECT_ANSWER, answersService.getServerAnswer(any()));
 	}
 
 	/**

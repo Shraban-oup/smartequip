@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.common.MapperUtil;
 import com.smartequip.common.PropDetails;
@@ -75,9 +75,7 @@ class ValidatorTest {
 			common.when(() -> {
 				CommonUtils.extractAllDigits(any());
 			}).thenReturn(digitList2value);
-			assertThrows(ValidationException.class, () -> {
-				validator.validateAnswer(serviceAnswer, generateToken);
-			}, CommonConstantsUtils.INVALID_CLIENT_ANSWER_REQUEST);
+			assertThrows(ValidationException.class, () -> validator.validateAnswer(serviceAnswer, generateToken), CommonConstants.INVALID_CLIENT_ANSWER_REQUEST);
 		}
 	}
 
@@ -99,7 +97,7 @@ class ValidatorTest {
 			when(answersService.getSmartEquipDetails(any())).thenReturn(Optional.empty());
 
 			assertThrows(ValidationException.class, () -> validator.validateAnswer(serviceAnswer, invalidtoken),
-					CommonConstantsUtils.INVALID_CLIENT_ANSWER_REQUEST);
+					CommonConstants.INVALID_CLIENT_ANSWER_REQUEST);
 		}
 	}
 
@@ -117,7 +115,7 @@ class ValidatorTest {
 			when(mapperUtil.mapper(any(), any())).thenReturn(smartequip);
 			when(answersService.getSmartEquipDetails(any())).thenReturn(Optional.of(answer));
 			assertThrows(ValidationException.class, () -> validator.validateAnswer(serviceAnswer, generateToken),
-					CommonConstantsUtils.WRONG_ANSWER_FORMAT);
+					CommonConstants.WRONG_ANSWER_FORMAT);
 		}
 	}
 
@@ -138,7 +136,7 @@ class ValidatorTest {
 			when(mapperUtil.mapper(any(), any())).thenReturn(smartequip);
 			when(answersService.getSmartEquipDetails(any())).thenReturn(Optional.of(answer));
 			assertThrows(ValidationException.class, () -> validator.validateAnswer(serviceAnswer, generateToken),
-					CommonConstantsUtils.WRONG_ANSWER);
+					CommonConstants.WRONG_ANSWER);
 		}
 	}
 
@@ -171,7 +169,7 @@ class ValidatorTest {
 		String serviceQuestion = "Hey Service, can you provide me a question with numbers     to add ?";
 
 		assertThrows(ValidationException.class, () -> validator.validateQuestion(serviceQuestion),
-				CommonConstantsUtils.WRONG_QUESTION);
+				CommonConstants.WRONG_QUESTION);
 	}
 
 	/**

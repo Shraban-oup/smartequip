@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonConstants;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.common.MapperUtil;
 import com.smartequip.exceptionhandler.ValidationException;
@@ -43,17 +43,17 @@ public class Validator {
 		List<Integer> allDigits = CommonUtils.extractAllDigits(request);
 
 		if (allDigits.size() < 3) {
-			throw new ValidationException(CommonConstantsUtils.INVALID_CLIENT_ANSWER_REQUEST);
+			throw new ValidationException(CommonConstants.INVALID_CLIENT_ANSWER_REQUEST);
 		}
-		List<Integer> qdigit = allDigits.stream().limit(allDigits.size() - 1).collect(Collectors.toList());
+		List<Integer> qdigit = allDigits.stream().limit(allDigits.size() - 1L).collect(Collectors.toList());
 		Smartequip userSmartequip = mapperUtil.mapper(qdigit, token);
 		Optional<Integer> smartEquipDetails = answersService.getSmartEquipDetails(userSmartequip);
 		if (!smartEquipDetails.isPresent()) {
-			throw new ValidationException(CommonConstantsUtils.INVALID_CLIENT_ANSWER_REQUEST);
+			throw new ValidationException(CommonConstants.INVALID_CLIENT_ANSWER_REQUEST);
 		} else if (!checkSyntax(request, allDigits.size() - 2)) {
-			throw new ValidationException(CommonConstantsUtils.WRONG_ANSWER_FORMAT);
+			throw new ValidationException(CommonConstants.WRONG_ANSWER_FORMAT);
 		} else if (!validateAnswer(allDigits, smartEquipDetails.get())) {
-			throw new ValidationException(CommonConstantsUtils.WRONG_ANSWER);
+			throw new ValidationException(CommonConstants.WRONG_ANSWER);
 		}
 
 		return userSmartequip;
@@ -67,8 +67,8 @@ public class Validator {
 	 * @return boolean
 	 */
 	public boolean checkSyntax(String request, int quesNumCount) {
-		String syntaxRegex = CommonConstantsUtils.USER_ANSEWER_REGEX_part1 + String.valueOf(quesNumCount)
-				+ CommonConstantsUtils.USER_ANSEWER_REGEX_part2;
+		String syntaxRegex = CommonConstants.USER_ANSEWER_REGEX_PART1 + String.valueOf(quesNumCount)
+				+ CommonConstants.USER_ANSEWER_REGEX_PART2;
 		return Pattern.compile(syntaxRegex).matcher(request).find();
 	}
 
@@ -80,10 +80,7 @@ public class Validator {
 	 * @return boolean
 	 */
 	public boolean validateAnswer(List<Integer> allDigits, int actualAnswer) {
-		if (allDigits.get(allDigits.size() - 1) == actualAnswer) {
-			return true;
-		}
-		return false;
+		return allDigits.get(allDigits.size() - 1) == actualAnswer;
 	}
 
 	/**
@@ -92,8 +89,8 @@ public class Validator {
 	 * @param question
 	 */
 	public boolean validateQuestion(String question) {
-		if (!Pattern.compile(CommonConstantsUtils.USER_FIRST_QUESTION_REGEX).matcher(question).find()) {
-			throw new ValidationException(CommonConstantsUtils.WRONG_QUESTION);
+		if (!Pattern.compile(CommonConstants.USER_FIRST_QUESTION_REGEX).matcher(question).find()) {
+			throw new ValidationException(CommonConstants.WRONG_QUESTION);
 		}
 		return true;
 	}
