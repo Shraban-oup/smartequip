@@ -1,11 +1,14 @@
 package com.smartequip.common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,28 +24,61 @@ class CommonUtilsTest {
 	@InjectMocks
 	private CommonUtils commonUtils;
 
+	public static PropDetails propDetails;
+
+	@BeforeAll
+	public static void init() {
+		propDetails = new PropDetails();
+		propDetails.setDigitMax("2");
+	}
+
 	/**
-	 * Test for random no is digit or not.
+	 * This test will validate two digit numbers.
 	 */
 	@Test
-	void generateSingleRandomNoTest() {
-		String generateRandomNo = String.valueOf(CommonUtils.generateSingleRandomNo());
+	void randomNumberUpToTwoDigitTest() {
+		String generateRandomNo = String.valueOf(CommonUtils.randomNumberUpToTwoDigit());
 		boolean result = Pattern.compile("^\\d+").matcher(generateRandomNo).find();
 		assertEquals(true, result);
 
 	}
 
 	/**
-	 * Test for no of generated random numbers are correct is size.
+	 * This test will validate random numbers must be 2<= number >=3. As we are
+	 * setting value 'setDigitMax("2")'.
 	 */
 	@Test
-	void generateRandomNumbersTest() {
-		List<Integer> generateRandomNumbers = CommonUtils.generateRandomNumbers(3);
-		assertEquals(3, generateRandomNumbers.size());
+	void maxDigitOfNumbersTest() {
+		int result = CommonUtils.maxDigitOfNumbers();
+		assertTrue(result >= 2 && result <= 3);
 	}
 
 	/**
-	 * Test for concatenation of numbers are making string with delimiter. 
+	 * This test will get all digits from string sentence.
+	 */
+	@Test
+	void extractAllDigitsTest() {
+		List<Integer> expectedResult = new ArrayList<>();
+		expectedResult.add(1);
+		expectedResult.add(3);
+		expectedResult.add(4);
+
+		List<Integer> result = CommonUtils.extractAllDigits("find 1,3,4");
+		assertTrue(result.equals(expectedResult));
+	}
+
+	/**
+	 * This test will check that random numbers size >2. As this use for getting
+	 * summing of numbers.
+	 */
+	@Test
+	void collectRandomNumbersTest() {
+		List<Integer> result = CommonUtils.collectRandomNumbers();
+		assertTrue(result.size() >= 2);
+	}
+
+	/**
+	 * Test for concatenation of numbers are making string with delimiter.
 	 */
 	@Test
 	void getDelimiterSeparatedTest() {
@@ -50,12 +86,4 @@ class CommonUtilsTest {
 		assertEquals("1,2,5", generateRandomNumbers);
 	}
 
-	/**
-	 * Test for sum of numbers are giving correct result.
-	 */
-	@Test
-	void getSumOfNumbersTest() {
-		int sumOfNumbers = CommonUtils.getSumOfNumbers(Arrays.asList(1, 2, 5));
-		assertEquals(8, sumOfNumbers);
-	}
 }

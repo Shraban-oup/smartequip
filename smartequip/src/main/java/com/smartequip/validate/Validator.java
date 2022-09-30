@@ -1,22 +1,23 @@
 package com.smartequip.validate;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.smartequip.common.CommonConstantsUtils;
 import com.smartequip.common.CommonUtils;
-import com.smartequip.exceptionhandler.ResourceNotFoundException;
+import com.smartequip.common.MapperUtil;
 import com.smartequip.exceptionhandler.ValidationException;
 import com.smartequip.model.Smartequip;
 import com.smartequip.service.SmartequipAnswersService;
 
 /**
  * This class is validation purpose of question and answer.
+ * 
  * @author Shraban.Rana
  *
  */
@@ -25,77 +26,76 @@ public class Validator {
 
 	@Autowired
 	private SmartequipAnswersService answersService;
-	
+
+	@Autowired
+	private MapperUtil mapperUtil;
 	
 	/**
 	 * This function validate the answer of asked question with various validation.
+	 * Criteria: at least 3 digits in sentence. ( bcs to get sum at least 2 number
+	 * required)
+	 * 
 	 * @param request
 	 * @param token
+	 * @return 
 	 */
-	public void validateAnswer(String request, String token) {
-		Optional<Smartequip> smartDetails = answersService.getSmartEquipDetails(token);
-		if (!smartDetails.isPresent()) {
-			throw new ResourceNotFoundException(CommonConstantsUtils.INVALID_TOEKN);
-		} else if (!checkAnswerFormat(request)) {
-			throw new ValidationException(CommonConstantsUtils.WRONG_ANSWER_FORMAT);
-		}
+	public Smartequip validateAnswer(String request, String token) {
 		List<Integer> allDigits = CommonUtils.extractAllDigits(request);
 
-		if (!validatePreQuestionNums(allDigits, smartDetails.get().getQuestionNums())) {
-			throw new ValidationException(CommonConstantsUtils.PRE_QUESTION_CHANGES);
-		} else if (!validateAnswer(allDigits, smartDetails.get().getAnsewer())) {
+		if (allDigits.size() < 3) {
+			throw new ValidationException(CommonConstantsUtils.INVALID_CLIENT_ANSWER_REQUEST);
+		}
+		List<Integer> qdigit = allDigits.stream().limit(allDigits.size() - 1).collect(Collectors.toList());
+		Smartequip userSmartequip = mapperUtil.mapper(qdigit, token);
+		Optional<Integer> smartEquipDetails = answersService.getSmartEquipDetails(userSmartequip);
+		if (!smartEquipDetails.isPresent()) {
+			throw new ValidationException(CommonConstantsUtils.INVALID_CLIENT_ANSWER_REQUEST);
+		} else if (!checkSyntax(request, allDigits.size() - 2)) {
+			throw new ValidationException(CommonConstantsUtils.WRONG_ANSWER_FORMAT);
+		} else if (!validateAnswer(allDigits, smartEquipDetails.get())) {
 			throw new ValidationException(CommonConstantsUtils.WRONG_ANSWER);
 		}
+
+		return userSmartequip;
 	}
 
-	
 	/**
-	 * This function validate client first request is correct format or not.
-	 * @param question
+	 * This function validate the format answer sentence .
+	 * 
+	 * @param quesNumCount
+	 * @param clientAnswer
+	 * @return boolean
 	 */
-	public void validateQuestion(String question) {
-		if (!Pattern.compile(CommonConstantsUtils.USER_FIRST_QUESTION_REGEX).matcher(question).find()) {
-			throw new ValidationException(CommonConstantsUtils.WRONG_QUESTION);
-		}
+	public boolean checkSyntax(String request, int quesNumCount) {
+		String syntaxRegex = CommonConstantsUtils.USER_ANSEWER_REGEX_part1 + String.valueOf(quesNumCount)
+				+ CommonConstantsUtils.USER_ANSEWER_REGEX_part2;
+		return Pattern.compile(syntaxRegex).matcher(request).find();
 	}
 
 	/**
 	 * This function validate the answer number is correct or not.
+	 * 
 	 * @param allDigits
 	 * @param actualAnswer
 	 * @return boolean
 	 */
 	public boolean validateAnswer(List<Integer> allDigits, int actualAnswer) {
-		if (allDigits.get(3) == actualAnswer) {
+		if (allDigits.get(allDigits.size() - 1) == actualAnswer) {
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * This function validate the format answer sentence .
-	 * @param clientAnswer
-	 * @return boolean
+	 * This function validate client first request is correct format or not.
+	 * 
+	 * @param question
 	 */
-	public boolean checkAnswerFormat(String clientAnswer) {
-		return Pattern.compile(CommonConstantsUtils.USER_ANSEWER_REGEX).matcher(clientAnswer).find();
-	}
-
-	/**
-	 * This function validate the asked question numbers are same or changes.
-	 * @param allDigits
-	 * @param actialnumbers
-	 * @return
-	 */
-	public boolean validatePreQuestionNums(List<Integer> allDigits, List<Integer> actialnumbers) {
-		if (allDigits.size() > 4) {
-			return false;
+	public boolean validateQuestion(String question) {
+		if (!Pattern.compile(CommonConstantsUtils.USER_FIRST_QUESTION_REGEX).matcher(question).find()) {
+			throw new ValidationException(CommonConstantsUtils.WRONG_QUESTION);
 		}
-		List<Integer> questionsdigit = Arrays.asList(allDigits.get(0), allDigits.get(1), allDigits.get(2));
-		if (questionsdigit.equals(actialnumbers)) {
-			return true;
-		}
-		return false;
+		return true;
 	}
 
 }

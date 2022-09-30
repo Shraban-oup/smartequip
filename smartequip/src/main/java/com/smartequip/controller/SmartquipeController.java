@@ -73,20 +73,17 @@ public class SmartquipeController {
 			@RequestHeader(value = "bearer", defaultValue = "") String token) {
 
 		if (!StringUtils.isEmpty(token)) {
-			logger.info("OldUser: request- " + request + " , token- " + token);
-			validator.validateAnswer(request, token);
-			String response = answersService.getServerAnswer(token);
+			Smartequip smartequip = validator.validateAnswer(request, token);
+			String response = answersService.getServerAnswer(smartequip);
 			return ResponseEntity.ok()
 					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));
 
 		} else {
-			logger.info("newUser: request- " + request + " , token- " + token);
 			validator.validateQuestion(request);
-
-			List<Integer> randomNumbers = CommonUtils.generateRandomNumbers(3);
-			Smartequip smartequip = mapperUtil.mapper(randomNumbers);
-			String uniqueToken = tokenGenerator.generateToken(smartequip);
-			String response = questionsService.getServerQuestion(uniqueToken,smartequip,randomNumbers);
+			List<Integer> ranNumbers = CommonUtils.collectRandomNumbers();
+			String uniqueToken = tokenGenerator.createUniqueToken(ranNumbers);
+			Smartequip smartequip = mapperUtil.mapper(ranNumbers, uniqueToken);
+			String response = questionsService.getServerQuestion(smartequip);
 
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("bearer", uniqueToken);

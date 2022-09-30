@@ -2,21 +2,21 @@ package com.smartequip.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mockStatic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.smartequip.cache.StoreInterface;
+import com.smartequip.cache.StoreProcess;
 import com.smartequip.common.CommonConstantsUtils;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.model.Smartequip;
@@ -28,31 +28,40 @@ import com.smartequip.model.Smartequip;
 @ExtendWith(MockitoExtension.class)
 class SmartequipQuestionsServiceTest {
 
-	@Mock
-	private StoreInterface storeInterface;
-
 	@InjectMocks
 	private SmartequipQuestionsService questionsService;
+
+	@Mock
+	private StoreProcess storeInterface;
+
+	public static Smartequip smartequip;
+	public static String generateToken;
+	private static List<Integer> digitList;
+
+	@BeforeAll
+	public static void init() {
+		digitList = new ArrayList<>();
+		digitList.add(10);
+		digitList.add(5);
+		digitList.add(15);
+		generateToken = "123456789103209-1232323";
+		smartequip = new Smartequip(digitList, generateToken);
+
+	}
 
 	/**
 	 * This function test whether generated numbers returning valid question format.
 	 */
 	@Test
 	void getServerQuestionTest() {
-	//	try (MockedStatic<CommonUtils> utilities = mockStatic(CommonUtils.class)) {
-		
-			List<Integer> questionNums = new ArrayList<>();
-			questionNums.add(10);
-			questionNums.add(5);
-			questionNums.add(15);
-			Smartequip smartequip = new Smartequip(questionNums, 30);
-			List<Integer> generateRandomNumbers = Arrays.asList(10, 4, 5);
-			String expected = CommonConstantsUtils.SERVER_QUESTION_PREFIX
-					+ CommonUtils.getDelimiterSeparated(CommonConstantsUtils.COMMA, generateRandomNumbers) + ".";
-			doNothing().when(storeInterface).addItem(any(), any());
-			assertEquals(expected, questionsService.getServerQuestion("123456", smartequip, generateRandomNumbers));
-
-	//	}
+		try (MockedStatic<CommonUtils> common = mockStatic(CommonUtils.class)) {
+			String expected = CommonConstantsUtils.SERVER_QUESTION_PREFIX + "10,5,15" + ".";
+			common.when(() -> {
+				CommonUtils.getDelimiterSeparated(any(), any());
+			}).thenReturn("10,5,15");
+			String result = questionsService.getServerQuestion(smartequip);
+			assertEquals(expected, result);
+		}
 	}
 
 }

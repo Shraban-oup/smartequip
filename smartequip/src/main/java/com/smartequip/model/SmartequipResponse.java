@@ -14,7 +14,6 @@ public class SmartequipResponse {
 
 	public SmartequipResponse() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public SmartequipResponse(String message, String status, int statusCode) {

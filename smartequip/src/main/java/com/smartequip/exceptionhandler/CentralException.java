@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import com.smartequip.common.CommonConstantsUtils;
 import com.smartequip.model.ErrorMessage;
 
 /**
@@ -36,21 +37,6 @@ public class CentralException {
 	}
 
 	/**
-	 * All type of ResourceNotFoundException exception handled here
-	 * 
-	 * @param ex
-	 * @param request
-	 * @return
-	 */
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.name(),
-				LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")), ex.getMessage());
-
-		return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
-	}
-
-	/**
 	 * Parent exception handler
 	 * 
 	 * @param ex
@@ -61,7 +47,8 @@ public class CentralException {
 	public ResponseEntity<ErrorMessage> globalExceptionHandler(Exception ex, WebRequest request) {
 		ErrorMessage message = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(),
 				HttpStatus.INTERNAL_SERVER_ERROR.name(),
-				LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")), ex.getMessage());
+				LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")),
+				CommonConstantsUtils.INTERNAL_SERVER_ERROR_MESSAGE);
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 	}

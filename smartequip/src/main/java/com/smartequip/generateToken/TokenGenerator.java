@@ -1,13 +1,12 @@
 package com.smartequip.generateToken;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
-
-import com.smartequip.model.Smartequip;
 
 /**
  * @author Shraban.Rana
@@ -19,10 +18,10 @@ public class TokenGenerator {
 	/**
 	 * This is generate unique token based on currentTimeInMilisecond and hash code.
 	 * 
-	 * @param smartequip
+	 * @param randomNumbers
 	 * @return String
 	 */
-	public String generateToken(Smartequip smartequip) {
+	public String createUniqueToken(List<Integer> randomNumbers) {
 
 		Supplier<String> tokenSupplier = () -> {
 			StringBuilder token = new StringBuilder();
@@ -31,7 +30,7 @@ public class TokenGenerator {
 		};
 
 		String token = Stream.generate(tokenSupplier).limit(1).findFirst().get();
-		return (String.valueOf(smartequip.hashCode()) + token);
+		return token+randomNumbers.hashCode();
 
 	}
 }

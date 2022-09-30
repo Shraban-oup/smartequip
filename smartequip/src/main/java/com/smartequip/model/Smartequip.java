@@ -10,42 +10,62 @@ import java.util.Objects;
 public class Smartequip {
 
 	private List<Integer> questionNums;
-	private int ansewer;
+	private String uniqueToken;
 
+	/**
+	 * 
+	 */
 	public Smartequip() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Smartequip(List<Integer> questionNums, int ansewer) {
+	/**
+	 * @param questionNums
+	 * @param uniqueToken
+	 */
+	public Smartequip(List<Integer> questionNums, String uniqueToken) {
 		super();
 		this.questionNums = questionNums;
-		this.ansewer = ansewer;
+		this.uniqueToken = uniqueToken;
 	}
 
+	/**
+	 * @return the questionNums
+	 */
 	public List<Integer> getQuestionNums() {
 		return questionNums;
 	}
 
+	/**
+	 * @param questionNums the questionNums to set
+	 */
 	public void setQuestionNums(List<Integer> questionNums) {
 		this.questionNums = questionNums;
 	}
 
-	public int getAnsewer() {
-		return ansewer;
+	/**
+	 * @return the uniqueToken
+	 */
+	public String getUniqueToken() {
+		return uniqueToken;
 	}
 
-	public void setAnsewer(int ansewer) {
-		this.ansewer = ansewer;
+	/**
+	 * @param uniqueToken the uniqueToken to set
+	 */
+	public void setUniqueToken(String uniqueToken) {
+		this.uniqueToken = uniqueToken;
 	}
 
 	@Override
 	public String toString() {
-		return "Smartequip [questionNums=" + questionNums + ", ansewer=" + ansewer + "]";
+		return "Smartequip [questionNums=" + questionNums + ", uniqueToken=" + uniqueToken + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ansewer, questionNums);
+		return Objects.hash(questionNums, uniqueToken);
 	}
 
 	@Override
@@ -57,8 +77,7 @@ public class Smartequip {
 		if (getClass() != obj.getClass())
 			return false;
 		Smartequip other = (Smartequip) obj;
-		return ansewer == other.ansewer && Objects.equals(questionNums, other.questionNums);
+		return Objects.equals(questionNums, other.questionNums) && Objects.equals(uniqueToken, other.uniqueToken);
 	}
-	
-	
+
 }

@@ -1,19 +1,19 @@
 package com.smartequip.service;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.smartequip.cache.StoreInterface;
+import com.smartequip.cache.StoreProcess;
 import com.smartequip.common.CommonConstantsUtils;
 import com.smartequip.common.CommonUtils;
 import com.smartequip.model.Smartequip;
 
 /**
- * This service class do operation on first client request for human verification
+ * This service class do operation on first client request for human
+ * verification
+ * 
  * @author Shraban.Rana
  *
  */
@@ -23,22 +23,22 @@ public class SmartequipQuestionsService {
 	Logger logger = LoggerFactory.getLogger(SmartequipQuestionsService.class);
 
 	@Autowired
-	private StoreInterface storeInterface;
+	private StoreProcess storeInterface;
 
 	/**
-	 * This will sent response with question and token for subsequent requests.
-	 * @param smartequip 
-	 * @param randomNumbers 
+	 * This function will register client unique record by calling HASHCODE and
+	 * equal method. And it will sent response with number of random digits. Max
+	 * Number of digits asked in question has mentioned in properties file.
+	 * 
+	 * @param smartequip
 	 * @param newtoken
 	 * @return
 	 */
-	public String getServerQuestion(String uniqueToken, Smartequip smartequip, List<Integer> randomNumbers) {
-		storeInterface.addItem(uniqueToken, smartequip);
-		logger.info("token: " + uniqueToken + " ,value: " + smartequip.toString());
-
+	public String getServerQuestion(Smartequip smartequip) {
+		int sumOfNumbers = smartequip.getQuestionNums().stream().mapToInt(Integer::intValue).sum();
+		storeInterface.addItem(smartequip, sumOfNumbers);
 		return CommonConstantsUtils.SERVER_QUESTION_PREFIX
-				+ CommonUtils.getDelimiterSeparated(CommonConstantsUtils.COMMA, randomNumbers) + ".";
+				+ CommonUtils.getDelimiterSeparated(CommonConstantsUtils.COMMA, smartequip.getQuestionNums()) + ".";
 	}
-	
 
 }

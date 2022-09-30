@@ -1,14 +1,10 @@
 package com.smartequip.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -17,9 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.smartequip.cache.StoreInterface;
+import com.smartequip.cache.StoreProcess;
 import com.smartequip.common.CommonConstantsUtils;
-import com.smartequip.model.Smartequip;
 
 /**
  * Test for client answer service class 
@@ -30,7 +25,7 @@ import com.smartequip.model.Smartequip;
 class SmartequipAnswersServiceTest {
 
 	@Mock
-	private StoreInterface storeInterface;
+	private StoreProcess storeInterface;
 
 	@InjectMocks
 	private SmartequipAnswersService answersService;
@@ -49,12 +44,7 @@ class SmartequipAnswersServiceTest {
 	 */
 	@Test
 	void getSmartEquipDetailsTest() {
-		List<Integer> questionNums = new ArrayList<>();
-		questionNums.add(10);
-		questionNums.add(5);
-		questionNums.add(15);
-		Smartequip smartequip = new Smartequip(questionNums, 30);
-		when(storeInterface.getItem(any())).thenReturn(Optional.of(smartequip));
-		assertEquals(smartequip.getAnsewer(), answersService.getSmartEquipDetails(any()).get().getAnsewer());
+		when(storeInterface.getItem(any())).thenReturn(Optional.of(12));
+		assertEquals(12, answersService.getSmartEquipDetails(any()).get());
 	}
 }

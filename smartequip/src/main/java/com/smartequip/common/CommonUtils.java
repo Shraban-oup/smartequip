@@ -9,12 +9,14 @@ import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Utility methods registered here.
  * @author Shraban.Rana
  *
  */
+@Component
 public class CommonUtils {
 	Logger logger = LoggerFactory.getLogger(CommonUtils.class);
 
@@ -23,10 +25,22 @@ public class CommonUtils {
 	 * Math.random() generates random number from 0.0 to 0.999
 	 * Hence, Math.random()*99 will be from 0.0 to 99.999
 	 * 
-	 * @return int
+	 * @return
 	 */
-	public static int generateSingleRandomNo() {
+	public static int randomNumberUpToTwoDigit() {
 		double doubleRandomNumber = Math.random() * 99;
+		int randomNumber = (int) doubleRandomNumber;
+		return randomNumber;
+	}
+	
+	/**
+	 * This will give you digit >=2 and <= PropDetails.getMax()
+	 * @return
+	 */
+	public static int maxDigitOfNumbers() {
+		int max = PropDetails.getMax();
+		double d = Math.random() * max;
+		double doubleRandomNumber = 2+d;
 		int randomNumber = (int) doubleRandomNumber;
 		return randomNumber;
 	}
@@ -51,8 +65,9 @@ public class CommonUtils {
 	 * @param noOfDegit
 	 * @return List<Integer>
 	 */
-	public static List<Integer> generateRandomNumbers(int noOfDegit) {
-		return IntStream.range(0, noOfDegit).mapToObj(v -> CommonUtils.generateSingleRandomNo()).collect(Collectors.toList());
+	public static List<Integer> collectRandomNumbers() {
+		int limit = maxDigitOfNumbers();
+		return IntStream.range(0, limit).mapToObj(v -> CommonUtils.randomNumberUpToTwoDigit()).collect(Collectors.toList());
 	}
 
 	/**
@@ -61,17 +76,8 @@ public class CommonUtils {
 	 * @param list
 	 * @return String
 	 */
-	public static String getDelimiterSeparated(String delimiter, List list) {
-		return (String) list.stream().map(v -> v.toString()).collect(Collectors.joining(","));
-	}
-
-	/**
-	 * This function find sum of List of integer.
-	 * @param numbers
-	 * @return final sum
-	 */
-	public static int getSumOfNumbers(List<Integer> numbers) {
-		return numbers.stream().mapToInt(Integer::intValue).sum();
+	public static String getDelimiterSeparated(String delimiter, List<Integer> list) {
+		return (String) list.stream().map(v -> String.valueOf(v)).collect(Collectors.joining(","));
 	}
 
 }
