@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ErrorMessage.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 3:30:04 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.model</a> &gt; <span class="el_source">ErrorMessage.java</span></div><h1>ErrorMessage.java</h1><pre class="source lang-java linenums">package com.smartequip.model;
+
+/**
+ * ErrorMessage response 
+ * @author Shraban.Rana
+ *
+ */
+public class ErrorMessage {
+	private int statusCode;
+	private String status;
+	private String localDateTime;
+	private String message;
+
+	public ErrorMessage() {
+<span class="fc" id="L15">		super();</span>
+<span class="fc" id="L16">	}</span>
+
+	public ErrorMessage(int statusCode, String status, String localDateTime, String message) {
+<span class="fc" id="L19">		super();</span>
+<span class="fc" id="L20">		this.statusCode = statusCode;</span>
+<span class="fc" id="L21">		this.status = status;</span>
+<span class="fc" id="L22">		this.localDateTime = localDateTime;</span>
+<span class="fc" id="L23">		this.message = message;</span>
+<span class="fc" id="L24">	}</span>
+
+	public int getStatusCode() {
+<span class="fc" id="L27">		return statusCode;</span>
+	}
+
+	public void setStatusCode(int statusCode) {
+<span class="fc" id="L31">		this.statusCode = statusCode;</span>
+<span class="fc" id="L32">	}</span>
+
+	public String getStatus() {
+<span class="fc" id="L35">		return status;</span>
+	}
+
+	public void setStatus(String status) {
+<span class="fc" id="L39">		this.status = status;</span>
+<span class="fc" id="L40">	}</span>
+
+	public String getLocalDateTime() {
+<span class="fc" id="L43">		return localDateTime;</span>
+	}
+
+	public void setLocalDateTime(String localDateTime) {
+<span class="fc" id="L47">		this.localDateTime = localDateTime;</span>
+<span class="fc" id="L48">	}</span>
+
+	public String getMessage() {
+<span class="fc" id="L51">		return message;</span>
+	}
+
+	public void setMessage(String message) {
+<span class="fc" id="L55">		this.message = message;</span>
+<span class="fc" id="L56">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 3:30:04 PM)</div></body></html>

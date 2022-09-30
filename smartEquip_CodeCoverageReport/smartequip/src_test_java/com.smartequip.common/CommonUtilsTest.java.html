@@ -1,46 +1,90 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommonUtilsTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 28, 2022 10:51:40 AM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.common</a> &gt; <span class="el_source">CommonUtilsTest.java</span></div><h1>CommonUtilsTest.java</h1><pre class="source lang-java linenums">package com.smartequip.common;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CommonUtilsTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 3:30:04 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.common</a> &gt; <span class="el_source">CommonUtilsTest.java</span></div><h1>CommonUtilsTest.java</h1><pre class="source lang-java linenums">package com.smartequip.common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+/**
+ * @author Shraban.Rana
+ *
+ */
 @ExtendWith(MockitoExtension.class)
-<span class="fc" id="L15">class CommonUtilsTest {</span>
+<span class="fc" id="L22">class CommonUtilsTest {</span>
 
 	@InjectMocks
 	private CommonUtils commonUtils;
 
+	public static PropDetails propDetails;
+
+	@BeforeAll
+	public static void init() {
+<span class="fc" id="L31">		propDetails = new PropDetails();</span>
+<span class="fc" id="L32">		propDetails.setDigitMax(&quot;2&quot;);</span>
+<span class="fc" id="L33">	}</span>
+
+	/**
+	 * This test will validate two digit numbers.
+	 */
 	@Test
-	void generateRandomNoTest() {
-<span class="fc" id="L22">		String generateRandomNo = String.valueOf(commonUtils.generateRandomNo());</span>
-<span class="fc" id="L23">		boolean result = Pattern.compile(&quot;^\\d+&quot;).matcher(generateRandomNo).find();</span>
-<span class="fc" id="L24">		assertEquals(true, result);</span>
+	void randomNumberUpToTwoDigitTest() {
+<span class="fc" id="L40">		String generateRandomNo = String.valueOf(CommonUtils.randomNumberUpToTwoDigit());</span>
+<span class="fc" id="L41">		boolean result = Pattern.compile(&quot;^\\d+&quot;).matcher(generateRandomNo).find();</span>
+<span class="fc" id="L42">		assertEquals(true, result);</span>
 
-<span class="fc" id="L26">	}</span>
+<span class="fc" id="L44">	}</span>
 
+	/**
+	 * This test will validate random numbers must be 2&lt;= number &gt;=3. As we are
+	 * setting value 'setDigitMax(&quot;2&quot;)'.
+	 */
 	@Test
-	void generateRandomNumbersTest() {
-<span class="fc" id="L30">		List&lt;Integer&gt; generateRandomNumbers = commonUtils.generateRandomNumbers(3);</span>
-<span class="fc" id="L31">		assertEquals(3, generateRandomNumbers.size());</span>
-<span class="fc" id="L32">	}</span>
+	void maxDigitOfNumbersTest() {
+<span class="fc" id="L52">		int result = CommonUtils.maxDigitOfNumbers();</span>
+<span class="pc bpc" id="L53" title="2 of 4 branches missed.">		assertTrue(result &gt;= 2 &amp;&amp; result &lt;= 3);</span>
+<span class="fc" id="L54">	}</span>
 
+	/**
+	 * This test will get all digits from string sentence.
+	 */
+	@Test
+	void extractAllDigitsTest() {
+<span class="fc" id="L61">		List&lt;Integer&gt; expectedResult = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L62">		expectedResult.add(1);</span>
+<span class="fc" id="L63">		expectedResult.add(3);</span>
+<span class="fc" id="L64">		expectedResult.add(4);</span>
+
+<span class="fc" id="L66">		List&lt;Integer&gt; result = CommonUtils.extractAllDigits(&quot;find 1,3,4&quot;);</span>
+<span class="fc" id="L67">		assertTrue(result.equals(expectedResult));</span>
+<span class="fc" id="L68">	}</span>
+
+	/**
+	 * This test will check that random numbers size &gt;2. As this use for getting
+	 * summing of numbers.
+	 */
+	@Test
+	void collectRandomNumbersTest() {
+<span class="fc" id="L76">		List&lt;Integer&gt; result = CommonUtils.collectRandomNumbers();</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		assertTrue(result.size() &gt;= 2);</span>
+<span class="fc" id="L78">	}</span>
+
+	/**
+	 * Test for concatenation of numbers are making string with delimiter.
+	 */
 	@Test
 	void getDelimiterSeparatedTest() {
-<span class="fc" id="L36">		String generateRandomNumbers = commonUtils.getDelimiterSeparated(&quot;,&quot;, Arrays.asList(1, 2, 5));</span>
-<span class="fc" id="L37">		assertEquals(&quot;1,2,5&quot;, generateRandomNumbers);</span>
-<span class="fc" id="L38">	}</span>
+<span class="fc" id="L85">		String generateRandomNumbers = CommonUtils.getDelimiterSeparated(&quot;,&quot;, Arrays.asList(1, 2, 5));</span>
+<span class="fc" id="L86">		assertEquals(&quot;1,2,5&quot;, generateRandomNumbers);</span>
+<span class="fc" id="L87">	}</span>
 
-	@Test
-	void getSumOfNumbersTest() {
-<span class="fc" id="L42">		int sumOfNumbers = commonUtils.getSumOfNumbers(Arrays.asList(1, 2, 5));</span>
-<span class="fc" id="L43">		assertEquals(8, sumOfNumbers);</span>
-<span class="fc" id="L44">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 28, 2022 10:51:40 AM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 3:30:04 PM)</div></body></html>

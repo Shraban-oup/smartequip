@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SmartquipeController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 28, 2022 10:51:40 AM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.controller</a> &gt; <span class="el_source">SmartquipeController.java</span></div><h1>SmartquipeController.java</h1><pre class="source lang-java linenums">package com.smartequip.controller;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SmartquipeController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 3:30:04 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.controller</a> &gt; <span class="el_source">SmartquipeController.java</span></div><h1>SmartquipeController.java</h1><pre class="source lang-java linenums">package com.smartequip.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smartequip.common.CommonConstantsUtils;
+import com.smartequip.common.CommonUtils;
+import com.smartequip.common.MapperUtil;
 import com.smartequip.generateToken.TokenGenerator;
 import com.smartequip.model.Smartequip;
 import com.smartequip.model.SmartequipResponse;
@@ -23,14 +26,15 @@ import com.smartequip.service.SmartequipQuestionsService;
 import com.smartequip.validate.Validator;
 
 /**
+ * SmartquipeController is used for client human verification.
+ * 
  * @author Shraban.Rana
  * 
- *         SmartquipeController is used for client human verification.
  */
 @RestController
-<span class="fc" id="L31">public class SmartquipeController {</span>
+<span class="fc" id="L35">public class SmartquipeController {</span>
 
-<span class="fc" id="L33">	Logger logger = LoggerFactory.getLogger(SmartquipeController.class);</span>
+<span class="fc" id="L37">	Logger logger = LoggerFactory.getLogger(SmartquipeController.class);</span>
 
 	@Autowired
 	private SmartequipQuestionsService questionsService;
@@ -43,6 +47,9 @@ import com.smartequip.validate.Validator;
 
 	@Autowired
 	private Validator validator;
+	
+	@Autowired
+	private MapperUtil mapperUtil;
 
 	/**
 	 * As per requirement, Smartequipe should have single end point '/' and client
@@ -51,45 +58,41 @@ import com.smartequip.validate.Validator;
 	 * 
 	 * bearer in header is not mandatory for new user.
 	 * 
+	 * consumes = { MediaType.ALL_VALUE }: because This is human verification APP
+	 * and also we are validating format of request sentence/text.
+	 * 
+	 * produces = { MediaType.APPLICATION_JSON_VALUE }: as we are sending code and
+	 * body etc.. so JSON format is best choice.
+	 * 
 	 * @param text
 	 * @param token
 	 * @return
 	 */
-	@PostMapping(&quot;/&quot;)
+	@PostMapping(name = &quot;/&quot;, consumes = { MediaType.ALL_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity&lt;SmartequipResponse&gt; smartEquipHumanClientCheck(@RequestBody String request,
 			@RequestHeader(value = &quot;bearer&quot;, defaultValue = &quot;&quot;) String token) {
 
-<span class="fc bfc" id="L62" title="All 2 branches covered.">		if (!StringUtils.isEmpty(token)) {</span>
-<span class="fc" id="L63">			logger.info(&quot;OldUser&quot;);</span>
-<span class="fc" id="L64">			Optional&lt;Smartequip&gt; smartDetails = answersService.getSmartEquipDetails(token);</span>
-<span class="fc" id="L65">			Optional&lt;String&gt; validatedAnswer = validator.validateAnswer(request, smartDetails);</span>
-<span class="fc bfc" id="L66" title="All 2 branches covered.">			if (validatedAnswer.isPresent()) {</span>
-<span class="fc" id="L67">				return ResponseEntity.badRequest().body(new SmartequipResponse(validatedAnswer.get(),</span>
-<span class="fc" id="L68">						HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()));</span>
-			}
-
-<span class="fc" id="L71">			String response = answersService.getServerAnswer(token);</span>
-<span class="fc" id="L72">			return ResponseEntity.ok()</span>
-<span class="fc" id="L73">					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">		if (!StringUtils.isEmpty(token)) {</span>
+<span class="fc" id="L76">			Smartequip smartequip = validator.validateAnswer(request, token);</span>
+<span class="fc" id="L77">			String response = answersService.getServerAnswer(smartequip);</span>
+<span class="fc" id="L78">			return ResponseEntity.ok()</span>
+<span class="fc" id="L79">					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));</span>
 
 		} else {
-<span class="fc" id="L76">			logger.info(&quot;newUser&quot;);</span>
-<span class="fc" id="L77">			Optional&lt;String&gt; validatedQuestion = validator.validateQuestion(request);</span>
-<span class="fc bfc" id="L78" title="All 2 branches covered.">			if (validatedQuestion.isPresent()) {</span>
-<span class="fc" id="L79">				return ResponseEntity.badRequest().body(new SmartequipResponse(validatedQuestion.get(),</span>
-<span class="fc" id="L80">						HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()));</span>
-			}
-<span class="fc" id="L82">			String newToken = tokenGenerator.generateToken();</span>
-<span class="fc" id="L83">			String response = questionsService.getQuestion(newToken);</span>
+<span class="fc" id="L82">			validator.validateQuestion(request);</span>
+<span class="fc" id="L83">			List&lt;Integer&gt; ranNumbers = CommonUtils.collectRandomNumbers();</span>
+<span class="fc" id="L84">			String uniqueToken = tokenGenerator.createUniqueToken(ranNumbers);</span>
+<span class="fc" id="L85">			Smartequip smartequip = mapperUtil.mapper(ranNumbers, uniqueToken);</span>
+<span class="fc" id="L86">			String response = questionsService.getServerQuestion(smartequip);</span>
 
-<span class="fc" id="L85">			HttpHeaders responseHeaders = new HttpHeaders();</span>
-<span class="fc" id="L86">			responseHeaders.set(&quot;bearer&quot;, newToken);</span>
+<span class="fc" id="L88">			HttpHeaders responseHeaders = new HttpHeaders();</span>
+<span class="fc" id="L89">			responseHeaders.set(&quot;bearer&quot;, uniqueToken);</span>
 
-<span class="fc" id="L88">			return ResponseEntity.ok().headers(responseHeaders)</span>
-<span class="fc" id="L89">					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));</span>
+<span class="fc" id="L91">			return ResponseEntity.ok().headers(responseHeaders)</span>
+<span class="fc" id="L92">					.body(new SmartequipResponse(response, CommonConstantsUtils.SUCCESS, HttpStatus.OK.value()));</span>
 		}
 
 	}
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 28, 2022 10:51:40 AM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 3:30:04 PM)</div></body></html>

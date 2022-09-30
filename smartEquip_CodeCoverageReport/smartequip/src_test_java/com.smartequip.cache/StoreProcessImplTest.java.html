@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>StoreProcessImplTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">smartequip (Sep 30, 2022 3:30:04 PM)</a> &gt; <a href="../../index.html" class="el_group">smartequip</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.smartequip.cache</a> &gt; <span class="el_source">StoreProcessImplTest.java</span></div><h1>StoreProcessImplTest.java</h1><pre class="source lang-java linenums">package com.smartequip.cache;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import com.smartequip.model.Smartequip;
+
+/**
+ * @author Shraban.Rana
+ *
+ */
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(OrderAnnotation.class)
+<span class="fc" id="L29">class StoreProcessImplTest {</span>
+
+	@InjectMocks
+	private StoreProcessImpl process;
+
+<span class="fc" id="L34">	public static ConcurrentHashMap&lt;Smartequip, Integer&gt; storeItem = new ConcurrentHashMap&lt;&gt;();</span>
+
+	public static Smartequip smartequip;
+	public static String generateToken;
+	private static List&lt;Integer&gt; digitList;
+	public static int answer;
+
+	/**
+	 * This will initiate before any test case runs.
+	 */
+	@BeforeAll
+	public static void init() {
+<span class="fc" id="L46">		digitList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L47">		digitList.add(10);</span>
+<span class="fc" id="L48">		digitList.add(5);</span>
+<span class="fc" id="L49">		digitList.add(15);</span>
+<span class="fc" id="L50">		generateToken = &quot;123456789103209-1232323&quot;;</span>
+<span class="fc" id="L51">		answer = 30;</span>
+<span class="fc" id="L52">		smartequip = new Smartequip(digitList, generateToken);</span>
+<span class="fc" id="L53">		storeItem.put(smartequip, answer);</span>
+<span class="fc" id="L54">		ReflectionTestUtils.setField(new StoreProcessImpl(), &quot;cache&quot;, storeItem);</span>
+
+<span class="fc" id="L56">	}</span>
+
+	/**
+	 * This test will execute first. This will test for addition in cache
+	 */
+	@Test
+	@Order(1)
+	void addItemTest() {
+<span class="fc" id="L64">		String newToken = &quot;12345670987722&quot;;</span>
+<span class="fc" id="L65">		Smartequip smartequipNew = new Smartequip(digitList, newToken);</span>
+<span class="fc" id="L66">		process.addItem(smartequipNew, answer);</span>
+<span class="fc" id="L67">		assertEquals(storeItem.get(smartequipNew), answer);</span>
+<span class="fc" id="L68">	}</span>
+
+	/**
+	 * This test will execute 2nd. This will test for get value by invalid key.
+	 */
+	@Test
+	@Order(2)
+	void getItemTest_invalidToken() {
+<span class="fc" id="L76">		String newToken = &quot;12345dweqwe33434&quot;;</span>
+<span class="fc" id="L77">		Smartequip smartequipNew = new Smartequip(digitList, newToken);</span>
+<span class="fc" id="L78">		Optional&lt;Integer&gt; item = this.process.getItem(smartequipNew);</span>
+<span class="fc" id="L79">		assertFalse(item.isPresent());</span>
+<span class="fc" id="L80">	}</span>
+
+	/**
+	 * This test will execute 3rd. This will test for get value by valid key.
+	 */
+	@Test
+	@Order(3)
+	void getItemTest_validToken() {
+<span class="fc" id="L88">		Optional&lt;Integer&gt; result = this.process.getItem(smartequip);</span>
+<span class="fc" id="L89">		assertEquals(answer, result.get());</span>
+
+<span class="fc" id="L91">	}</span>
+
+	/**
+	 * This test will execute 4rd. This will test to delete records.
+	 */
+	@Test
+	@Order(4)
+	void deleteItemTest() {
+<span class="fc" id="L99">		this.process.deleteItem(smartequip);</span>
+<span class="fc" id="L100">		assertFalse(storeItem.containsKey(smartequip));</span>
+<span class="fc" id="L101">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>smartequip (Sep 30, 2022 3:30:04 PM)</div></body></html>
